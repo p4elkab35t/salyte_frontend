@@ -38,7 +38,7 @@
 				<NavItem href={link.href} name={link.name} Svg={link.svg}/>
 			{/each}
 		</ul>
-		<div class="text-[#212121] p-0 py-2">
+		<div class="text-[#212121] p-0 py-2 pt-3">
 			<ProfileCard
 				profileID={profile.profileID}
 				name={profile.name}

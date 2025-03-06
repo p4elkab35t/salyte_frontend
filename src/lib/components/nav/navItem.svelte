@@ -20,13 +20,14 @@
 </script>
 
 <style>
-    :global(svg) {
-        width: 2rem;
-        height: 2rem;
+    :global(a>svg) {
         fill: #212121;
     }
 
-
+    :global(svg) {
+        width: 2rem;
+        height: 2rem;
+    }
 
     /* :global(a:hover > svg) {
         fill: #222277;

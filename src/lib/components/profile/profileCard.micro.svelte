@@ -19,20 +19,21 @@
 <div class="relative cursor-pointer sm:p-0 px-3">
 	<button
 		type="button"
-		class="flex flex-col items-center text-[#212121] group cursor-pointer"
+		class="flex flex-row gap-4 items-center text-[#212121] group cursor-pointer"
 		onclick={() => (isClicked = !isClicked)}
 		onkeydown={(e) => e.key === 'Enter' && (isClicked = !isClicked)}
 		aria-label="Profile card"
 	>
+        <h1 class="text-md font-semibold ">{name}</h1>
 		<img
 			src={profilePic}
 			alt="{name}'s profile picture"
-			class="rounded-md w-12 h-12 border-2 border-[#212121] group-hover:border-1 group-hover:scale-105 transition-all"
+			class="rounded-md w-13 h-13 border-2 border-[#212121] group-hover:border-1 group-hover:scale-105 transition-all"
 		/>
-		<h1 class="text-[12px]">{name}</h1>
 	</button>
 	{#if isClicked}
-		<div class="absolute top-14 right-0 bg-zinc-100 rounded-lg cursor-pointer">
+		<button class="block z-40 fixed lg:hidden top-0 left-0 w-screen h-screen bg-black opacity-75" onclick={() => (isClicked = !isClicked)} aria-label="Close profile card"></button>
+		<div class="lg:z-30 z-50 top-1/2 left-1/2 -translate-1/2 fixed lg:absolute lg:top-14 lg:right-0 bg-zinc-100 rounded-lg cursor-pointer">
 			<ProfileCard {name} {profilePic} {profileID} {bio} />
 		</div>
 	{/if}
