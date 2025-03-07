@@ -1,5 +1,6 @@
 export const user = $state({
 	name: 'John Doe',
+    bio: ' <3 you all',
 	token: '123456789',
 	user_id: '123456789',
 	profile_id: '123456789',

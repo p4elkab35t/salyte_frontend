@@ -468,3 +468,63 @@ export const mockComments = [
             }, content: "This is very insightful. Thanks for sharing!", timestamp: "2021-09-03T16:30:00Z" }
         ]},
 ]
+
+export const profiles = [
+    {
+        name: "John Doe",
+        bio: "A passionate writer and tech enthusiast.",
+        profilePic: "https://randomuser.me/api/portraits/men/1.jpg",
+        profileID: "123456789"
+    },
+    {
+        name: "Alice Johnson",
+        bio: "Tech blogger and developer.",
+        profilePic: "https://randomuser.me/api/portraits/women/55.jpg",
+        profileID: "author2"
+    },
+    {
+        name: "Bob Brown",
+        bio: "Software engineer and tech enthusiast.",
+        profilePic: "https://randomuser.me/api/portraits/men/66.jpg",
+        profileID: "author3"
+    },
+    {
+        name: "Jane Smith",
+        bio: "UX designer and creative thinker.",
+        profilePic: "https://randomuser.me/api/portraits/women/44.jpg",
+        profileID: "author4"
+    }
+]
+
+export const chats = [
+    {
+        name: "Alice Johnson",
+        chatID: "author2",
+        profilePic: "https://randomuser.me/api/portraits/women/55.jpg",
+        profileID: "author2",
+        lastMessage: {
+            content: "Hi, how are you?",
+            timestamp: "2021-09-01T12:30:00Z"
+        }
+    },
+    {
+        name: "Bob Brown",
+        chatID: "author3",
+        profilePic: "https://randomuser.me/api/portraits/men/66.jpg",
+        profileID: "author3",
+        lastMessage: {
+            content: "I agree with your points THIS IS VERY LONG ARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR.",
+            timestamp: "2021-09-01T12:45:00Z"
+        }
+    },
+    {
+        name: "Jane Smith",
+        chatID: "author4",
+        profilePic: "https://randomuser.me/api/portraits/women/44.jpg",
+        profileID: "author4",
+        lastMessage: {
+            content: "This is very insightful.",
+            timestamp: "2021-09-01T13:00:00Z"
+        }
+    }
+]

@@ -5,13 +5,12 @@
     import FeedIcon from '$lib/icons/feedIcon.svelte';
     import ChatIcon from '$lib/icons/chatIcon.svelte';
     import CommunityIcon from '$lib/icons/communityIcon.svelte';
+    import { user } from '$lib/stores/user.svelte';
 
 	interface NavProps {
 		profile: profileProps;
 	}
-
-	let { profile }: NavProps = $props();
-
+	// let { profile }: NavProps = $props();
 	const links = [
         {
 			name: 'Feed',
@@ -23,11 +22,11 @@
 			href: '/message',
             svg: ChatIcon
 		},
-		{
-			name: 'Communities',
-			href: '/community',
-            svg: CommunityIcon
-		}
+		// {
+		// 	name: 'Communities',
+		// 	href: '/community',
+        //     svg: CommunityIcon
+		// }
 	];
 </script>
 
@@ -40,10 +39,10 @@
 		</ul>
 		<div class="text-[#212121] p-0 py-2 pt-3">
 			<ProfileCard
-				profileID={profile.profileID}
-				name={profile.name}
-				profilePic={profile.profilePic}
-				bio={profile.bio}
+				profileID={user.profile_id}
+				name={user.name}
+				profilePic={user.profile_picture}
+				bio={user.bio}
 			/>
 		</div>
 	</div>
