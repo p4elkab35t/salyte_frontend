@@ -1,23 +1,7 @@
 <script lang="ts">
     import PostCard from "$lib/components/post/postCard.svelte";
-    import type { PostCardProps } from "$lib/components/post/postCard.svelte";
-    import mockPosts from "./mockData";
-
-    // author: {
-    //     name: string;
-    //     bio: string;
-    //     profilePic: string;
-    //     profileID: string;
-    // };
-    // timestamp: string;
-    // title: string;
-    // content: string;
-    // reaction: {
-        //     isLiked: Math.random() < 0.5,
-        //     count: Math.floor(Math.random() * 100)
-        // }number;
-    // commentsNumber: number;
-    // postId: string;
+    import type { PageProps } from "./$types";
+    let { data }: PageProps = $props();
 </script>
 
 <main>
@@ -29,7 +13,7 @@
         <textarea class="border border-zinc-600 min-h-[60px] text-zinc-800 p-3 rounded-sm" placeholder="What's new?"></textarea>
         <button class="bg-amber-500 text-white p-2 min-w-full md:min-w-[180px] md:w-min rounded-md cursor-pointer hover:bg-amber-600">Post</button>
     </div>
-    {#each mockPosts as post}
+    {#each data.posts as post}
         <PostCard {...post} />
     {/each}
 </main>
