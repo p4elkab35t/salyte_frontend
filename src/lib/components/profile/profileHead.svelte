@@ -2,6 +2,7 @@
     // import { user } from "$lib/stores/user.svelte";
     import { userProfileStore } from "$lib/stores/user";
 	import { onMount } from "svelte";
+    import { SocialAPI } from "$lib/api/social";
 
     interface profileHeadProps {
         profileId: string;
@@ -10,27 +11,66 @@
         profilePic: string;
     }
 
-    let name = $state('');
-    let bio = $state('');
-    let profilePic = $state('');
+    interface profileUpdateRequest {
+        ProfileID: string;
+        Username: string;
+        Bio: string | null;
+        ProfilePictureURL: string | null;
+    }
+
+    let profileData = $state({
+        name: '',
+        bio: '',
+        profilePic: '',
+        isOwner: false,
+    })
 
     let editing = $state(false);
-    let isOwner = $state(false);
 
     const profileProps: profileHeadProps = $props();
     
     let user = userProfileStore.getProfile();
 
     onMount(() => {
-        name = profileProps.name;
-        bio = profileProps.bio;
-        profilePic = profileProps.profilePic;
-        if(user.profileId === profileProps.profileId) isOwner = true;
+        profileData.name = profileProps.name;
+        profileData.bio = profileProps.bio;
+        profileData.profilePic = profileProps.profilePic;
+        if(user.profileId === profileProps.profileId) 
+        {      
+            profileData.isOwner = true;
+        }
     });
 
     const saveChanges = () => {
-        console.log('Saving changes');
-        editing = !editing;
+        if (user.displayName === '' || user.displayName === null || user.displayName === undefined)
+        {
+            console.error('Name cannot be empty');
+            return;
+        }
+
+        if (user.profileId === '' || user.profileId === null || user.profileId === undefined)
+        {
+            console.error('Cannot find profileID');
+            return;
+        }
+
+        const updateUserDataObject: profileUpdateRequest = {
+            ProfileID: user.profileId,
+            Username: user.displayName,
+            Bio: user.bio,
+            ProfilePictureURL: user.avatar
+        }
+
+
+        SocialAPI.updateProfile(updateUserDataObject).then(() => {
+            profileData.name = user.displayName ? user.displayName : profileData.name;
+            profileData.bio = user.bio ? user.bio : profileData.bio;
+            profileData.profilePic = user.avatar ? user.avatar : profileData.profilePic;
+        }).catch((error) => {
+            console.error(error);
+        }).finally(() => {
+            editing = !editing;
+        });
     }
 
 </script>
@@ -40,7 +80,7 @@
 </style>
 
 <div class="profile-card w-full flex flex-row gap-10 border border-zinc-600 text-zinc-800 p-4 rounded-sm bg-zinc-300">
-    <img class="profile-pic w-32 h-32 border rounded-sm" src={profilePic || 'default.jpg'} alt="{name}'s profile picture" />
+    <img class="profile-pic w-32 h-32 border rounded-sm" src={profileData.profilePic || 'default.jpg'} alt="{name}'s profile picture" />
     <div class="flex flex-col justify-between gap-4">
     {#if editing}
         <div class="flex flex-col">
@@ -68,10 +108,10 @@
         </div>
     {:else}
         <div class="flex flex-col">
-            <h2 class="text-3xl font-bold">{name}</h2>
-            <p class="text-md text-zinc-600">{bio}</p>
+            <h2 class="text-3xl font-bold">{profileData.name}</h2>
+            <p class="text-md text-zinc-600">{profileData.bio}</p>
         </div>
-        {#if isOwner}
+        {#if profileData.isOwner}
             <div>
                 <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={() => editing = !editing}>Edit Profile</button>
                 <!-- <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={() => console.log('Go to Settings')}>Settings</button> -->

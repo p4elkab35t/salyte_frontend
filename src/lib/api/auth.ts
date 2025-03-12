@@ -1,5 +1,6 @@
 import { authStore } from '../stores/auth';
 import { userProfileStore } from '../stores/user';
+import { page } from '$app/state';
 // import { backendUrl } from './API_URL';
 
 export interface LoginCredentials {
@@ -27,7 +28,7 @@ async function apiRequest(endpoint: string, options: RequestInit): Promise<AuthR
 
   
 
-  let hostname = window.location.hostname;
+  let hostname = page.url.hostname;
   hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
 
   const API_URL = `http://${hostname}:3000/api/secure/auth`;

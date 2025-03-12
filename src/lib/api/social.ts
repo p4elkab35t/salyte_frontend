@@ -1,4 +1,5 @@
 import { authStore } from '../stores/auth';
+import { page } from '$app/state';
 // import { backendUrl } from './API_URL';
 
 
@@ -21,7 +22,7 @@ async function authFetch(
   const token = authStore.getToken();
   const localUserID = authStore.getUserId();
 
-  let hostname = window.location.hostname;
+  let hostname = page.url.hostname;
   hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
 
   const API_URL = `http://${hostname}:3000/api/social`;

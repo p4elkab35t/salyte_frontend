@@ -1,7 +1,7 @@
 <script lang="ts">
     import ProfileHead from "$lib/components/profile/profileHead.svelte";
-    import { page } from "$app/state";
-	import { onMount } from "svelte";
+    // import { page } from "$app/state";
+	// import { onMount } from "svelte";
 	import type { PageProps } from './$types';
     import PostCard from "$lib/components/post/postCard.svelte";
 
@@ -26,12 +26,16 @@
             {#await data.posts}
                 <h1>Loading...</h1>
             {:then posts}
-                {#if posts.length === 0 && posts !== undefined}
+                {#if posts}
+                    {#if posts.length === 0 && posts !== undefined}
+                        <h1>No posts</h1>
+                    {/if}
+                    {#each posts as post (post.id)}
+                        <PostCard {...post} />
+                    {/each}
+                {:else}
                     <h1>No posts</h1>
                 {/if}
-                {#each data.posts as post (post.id)}
-                    <PostCard {...post} />
-                {/each}
             {:catch error}
                 <h1>Error: {error.message}</h1>
             {/await}
