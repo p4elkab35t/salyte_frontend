@@ -10,10 +10,6 @@ COPY package*.json bun.lock *config.* ./
 # Install dependencies
 RUN bun install
 
-# Ensure correct permissions
-RUN chown -R root:root /app/frontend
-
-
 # Copy the rest of the application code
 COPY . /app/frontend/
 
