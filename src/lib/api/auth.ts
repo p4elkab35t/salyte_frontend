@@ -1,7 +1,7 @@
 import { authStore } from '../stores/auth';
 import { userProfileStore } from '../stores/user';
 
-const API_URL = '127.0.0.1:3000/api/secure/auth';
+const API_URL = ':3000/api/secure/auth';
 
 export interface LoginCredentials {
   email: string;
