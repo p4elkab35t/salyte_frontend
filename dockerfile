@@ -16,7 +16,7 @@ RUN chown bun:bun /app/frontend -R
 # Copy the rest of the application code
 COPY . /app/frontend/
 
-COPY --chown=node:node --from=deps /app/frontend/node_modules/ ./node_modules/
+COPY --chown=bun:bun --from=deps /app/frontend/node_modules/ ./node_modules/
 
 # Generate SvelteKit types and config
 RUN bun run prepare
