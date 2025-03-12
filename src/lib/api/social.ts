@@ -1,6 +1,6 @@
 import { authStore } from '../stores/auth';
 
-const API_URL = '/api/social';
+const API_URL = '127.0.0.1:3000/api/social';
 
 interface ApiResponse {
   status?: number;
