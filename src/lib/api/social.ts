@@ -1,7 +1,10 @@
 import { authStore } from '../stores/auth';
 // import { backendUrl } from './API_URL';
 
-const API_URL = `:3000/api/social`;
+let hostname = window.location.hostname;
+hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
+
+const API_URL = `http://${hostname}:3000/api/social`;
 
 interface ApiResponse {
   status?: number;
@@ -31,7 +34,7 @@ async function authFetch(
   const finalEndpoint = hasUserID ? endpoint : `${endpoint}${connector}userID=${localUserID}`;
   
   try {
-    const url = `${window.location.hostname}${API_URL}${finalEndpoint}`;
+    const url = `${API_URL}${finalEndpoint}`;
     const response = await fetch(url, {
       method,
       headers: {

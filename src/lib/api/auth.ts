@@ -2,7 +2,10 @@ import { authStore } from '../stores/auth';
 import { userProfileStore } from '../stores/user';
 // import { backendUrl } from './API_URL';
 
-const API_URL = `:3000/api/secure/auth`;
+let hostname = window.location.hostname;
+hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
+
+const API_URL = `http://${hostname}:3000/api/secure/auth`;
 
 export interface LoginCredentials {
   email: string;
@@ -38,7 +41,7 @@ export const AuthAPI = {
     }
 
     try {
-      const response = await fetch(`${window.location.hostname}${API_URL}/signin`, {
+      const response = await fetch(`${API_URL}/signin`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`
