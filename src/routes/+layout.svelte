@@ -30,6 +30,7 @@
             avatar: typeof profileResponse.ProfilePictureURL === 'string' ? profileResponse.ProfilePictureURL : null,
             bio: typeof profileResponse.Bio === 'string' ? profileResponse.Bio : null
           });
+          console.log(userProfileStore.getProfile());
         }
       } catch (error) {
         console.error('Failed to load user profile:', error);
@@ -37,11 +38,11 @@
     }
   }
 
-  $effect(() => {
-    if ($authStore.isAuthenticated && $authStore.userId && $authStore.token) {
-      goto('/feed');
-    }
-  });
+  // $effect(() => {
+  //   if ($authStore.isAuthenticated && $authStore.userId && $authStore.token) {
+  //     goto('/feed');
+  //   }
+  // });
 
   onMount(async () => {
     if (browser) {
