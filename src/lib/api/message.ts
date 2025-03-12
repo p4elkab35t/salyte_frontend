@@ -1,7 +1,7 @@
 import { authStore } from '../stores/auth';
-import { backendUrl } from './API_URL';
+// import { backendUrl } from './API_URL';
 
-const API_URL = `http://${backendUrl}:3000/api/message`;
+const API_URL = `:3000/api/message`;
 
 interface ApiResponse {
   status?: number;
@@ -26,7 +26,7 @@ async function authFetch(
   
   try {
     // Add userID to endpoint
-    const url = `${API_URL}${endpoint}${endpoint.includes('?') ? '&' : '?'}user_id=${userId}`;
+    const url = `${window.location.hostname}${API_URL}${endpoint}${endpoint.includes('?') ? '&' : '?'}user_id=${userId}`;
     
     const response = await fetch(url, {
       method,
