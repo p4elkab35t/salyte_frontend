@@ -1,6 +1,6 @@
 import { authStore } from '../stores/auth';
 
-const API_URL = ':3000/api/message';
+const API_URL = '127.0.0.1:3000/api/message';
 
 interface ApiResponse {
   status?: number;
@@ -25,7 +25,7 @@ async function authFetch(
   
   try {
     // Add userID to endpoint
-    const url = `${API_URL}${endpoint}${endpoint.includes('?') ? '&' : '?'}user_id=${userId}`;
+    const url = `https://${API_URL}${endpoint}${endpoint.includes('?') ? '&' : '?'}user_id=${userId}`;
     
     const response = await fetch(url, {
       method,

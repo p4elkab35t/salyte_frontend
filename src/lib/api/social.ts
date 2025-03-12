@@ -1,6 +1,6 @@
 import { authStore } from '../stores/auth';
 
-const API_URL = ':3000/api/social';
+const API_URL = '127.0.0.1:3000/api/social';
 
 interface ApiResponse {
   status?: number;
@@ -30,7 +30,7 @@ async function authFetch(
   const finalEndpoint = hasUserID ? endpoint : `${endpoint}${connector}userID=${localUserID}`;
   
   try {
-    const url = `${API_URL}${finalEndpoint}`;
+    const url = `https://${API_URL}${finalEndpoint}`;
     const response = await fetch(url, {
       method,
       headers: {
