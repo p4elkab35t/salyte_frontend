@@ -1,0 +1,13 @@
+services:
+  frontend:
+    build: .
+    ports:
+      - "80:4173" 
+    networks:
+      - salyte
+    environment:
+      - NODE_ENV=production
+
+networks:
+  salyte:
+    external: true
