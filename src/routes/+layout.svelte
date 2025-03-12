@@ -36,6 +36,12 @@
     }
   }
 
+  $effect(() => {
+    if ($authStore.isAuthenticated && $authStore.userId && $authStore.token) {
+      goto('/feed');
+    }
+  });
+
   onMount(async () => {
     if (browser) {
       // Wait for auth store to initialize from localStorage
