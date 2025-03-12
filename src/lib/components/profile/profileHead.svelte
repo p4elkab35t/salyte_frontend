@@ -61,6 +61,7 @@
             ProfilePictureURL: user.avatar
         }
 
+        console.log(updateUserDataObject);
 
         SocialAPI.updateProfile(updateUserDataObject).then(() => {
             profileData.name = user.displayName ? user.displayName : profileData.name;
