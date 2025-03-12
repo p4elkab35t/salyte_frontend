@@ -2,7 +2,7 @@
 	import InputField from '$lib/components/login/inputField.svelte';
 	import InputForm from '$lib/components/login/inputForm.svelte';
 	import Button from '$lib/components/general/button.svelte';
-	import { on } from 'svelte/events';
+	import { AuthAPI } from '$lib/api/auth';
 
 	let email = $state('');
 	let password = $state('');
@@ -10,10 +10,10 @@
 
 	const submit = async () => {
 		isSubmitting = true;
-		let timer = setTimeout(() => {
-			console.log(email, password);
+		AuthAPI.login({email, password}).then((response) => {
+			console.log(response);
 			isSubmitting = false;
-		}, 3000);
+		});
 		console.log(email, password);
 	};
 </script>
