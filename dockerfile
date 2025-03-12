@@ -20,7 +20,7 @@ COPY . .
 RUN bun run build
 
 # Expose the port that your application runs on
-EXPOSE 80
+EXPOSE 80 4173
 
 # Define environment variables
 ENV NODE_ENV=production
