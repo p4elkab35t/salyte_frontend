@@ -59,7 +59,7 @@
       const isValid = await AuthAPI.verifyToken();
       
       // If invalid token, redirect to login if not already there
-      if (!isValid && !$page.url.pathname.startsWith('/signin') && !$page.url.pathname.startsWith('/signup')) {
+      if (!isValid && !$page.url.pathname.startsWith('/signin') && !$page.url.pathname.startsWith('/signup') && $page.url.pathname !== '/') {
         const returnUrl = $page.url.pathname;
         goto(`/signin${returnUrl ? `?redirect=${encodeURIComponent(returnUrl)}` : ''}`);
         return;
