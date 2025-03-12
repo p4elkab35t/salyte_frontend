@@ -1,5 +1,6 @@
 import { authStore } from '../stores/auth';
 import { page } from '$app/state';  
+import { browser } from 'process';
 // import { backendUrl } from './API_URL';
 
 interface ApiResponse {
@@ -16,37 +17,41 @@ async function authFetch(
   method: string = 'GET', 
   body?: object
 ): Promise<ApiResponse> {
-  const token = authStore.getToken();
-  const userId = authStore.getUserId();
+  if(browser){
+    const token = authStore.getToken();
+    const userId = authStore.getUserId();
 
-  let hostname = page.url.hostname;
-  hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
+    let hostname = page.url.hostname;
+    hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
 
-  const API_URL = `http://${hostname}:3000/api/message`;
-  
-  if (!token || !userId) {
-    return { status: 401, error: 'Not authenticated' };
-  }
-  
-  try {
-    // Add userID to endpoint
-    const url = `${API_URL}${endpoint}${endpoint.includes('?') ? '&' : '?'}user_id=${userId}`;
+    const API_URL = `http://${hostname}:3000/api/message`;
     
-    const response = await fetch(url, {
-      method,
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: body ? JSON.stringify(body) : undefined
-    });
-    
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`API error (${endpoint}):`, error);
-    return { status: 500, error: 'Network or server error' };
+    if (!token || !userId) {
+      return { status: 401, error: 'Not authenticated' };
+    }
+
+    try {
+      // Add userID to endpoint
+      const url = `${API_URL}${endpoint}${endpoint.includes('?') ? '&' : '?'}user_id=${userId}`;
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: body ? JSON.stringify(body) : undefined
+      });
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(`API error (${endpoint}):`, error);
+      return { status: 500, error: 'Network or server error' };
+    }
   }
+  return { status: 405, error: 'Request outside of browser' };
+
 }
 
 /**

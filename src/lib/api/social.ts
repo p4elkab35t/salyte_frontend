@@ -1,5 +1,6 @@
 import { authStore } from '../stores/auth';
 import { page } from '$app/state';
+import { browser } from 'process';
 // import { backendUrl } from './API_URL';
 
 
@@ -19,40 +20,43 @@ async function authFetch(
   method: string = 'GET', 
   body?: object
 ): Promise<ApiResponse> {
-  const token = authStore.getToken();
-  const localUserID = authStore.getUserId();
+  if(browser){
+    const token = authStore.getToken();
+    const localUserID = authStore.getUserId();
 
-  let hostname = page.url.hostname;
-  hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
+    let hostname = page.url.hostname;
+    hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
 
-  const API_URL = `http://${hostname}:3000/api/social`;
-  
-  if (!token || !localUserID) {
-    return { status: 401, error: 'Not authenticated' };
-  }
-  
-  // If endpoint already has any user identification, do not add another.
-  const hasUserID = /userID=/i.test(endpoint) || /profileID=/i.test(endpoint);
-  const connector = endpoint.includes('?') ? '&' : '?';
-  const finalEndpoint = hasUserID ? endpoint : `${endpoint}${connector}userID=${localUserID}`;
-  
-  try {
-    const url = `${API_URL}${finalEndpoint}`;
-    const response = await fetch(url, {
-      method,
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: body ? JSON.stringify(body) : undefined
-    });
+    const API_URL = `http://${hostname}:3000/api/social`;
     
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`API error (${endpoint}):`, error);
-    return { status: 500, error: 'Network or server error' };
+    if (!token || !localUserID) {
+      return { status: 401, error: 'Not authenticated' };
+    }
+
+    // If endpoint already has any user identification, do not add another.
+    const hasUserID = /userID=/i.test(endpoint) || /profileID=/i.test(endpoint);
+    const connector = endpoint.includes('?') ? '&' : '?';
+    const finalEndpoint = hasUserID ? endpoint : `${endpoint}${connector}userID=${localUserID}`;
+
+    try {
+      const url = `${API_URL}${finalEndpoint}`;
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: body ? JSON.stringify(body) : undefined
+      });
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(`API error (${endpoint}):`, error);
+      return { status: 500, error: 'Network or server error' };
+    }
   }
+  return { status: 405, error: 'Request Outisde of browser' };
 }
 
 /**

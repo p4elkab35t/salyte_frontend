@@ -1,6 +1,7 @@
 import { authStore } from '../stores/auth';
 import { userProfileStore } from '../stores/user';
 import { page } from '$app/state';
+import { browser } from 'process';
 // import { backendUrl } from './API_URL';
 
 export interface LoginCredentials {
@@ -25,28 +26,28 @@ export interface AuthResponse {
  * Middleware to handle API requests
  */
 async function apiRequest(endpoint: string, options: RequestInit): Promise<AuthResponse> {
-
+  if(browser){
+    let hostname = page.url.hostname;
+    hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
   
-
-  let hostname = page.url.hostname;
-  hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
-
-  const API_URL = `http://${hostname}:3000/api/secure/auth`;
-  try {
-    const response = await fetch(`${API_URL}${endpoint}`, options);
-    const data = await response.json();
-    if (response.ok && data.status === 0) {
-      return data;
-    } else {
-      return { 
-        status: data.status || 1, 
-        error: data.error || 'Request failed' 
-      };
+    const API_URL = `http://${hostname}:3000/api/secure/auth`;
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`, options);
+      const data = await response.json();
+      if (response.ok && data.status === 0) {
+        return data;
+      } else {
+        return { 
+          status: data.status || 1, 
+          error: data.error || 'Request failed' 
+        };
+      }
+    } catch (error) {
+      console.error('API request error:', error);
+      return { status: 1, error: 'Network or server error' };
     }
-  } catch (error) {
-    console.error('API request error:', error);
-    return { status: 1, error: 'Network or server error' };
   }
+  return { status: 1, error: 'Network or server error' };
 }
 
 /**
