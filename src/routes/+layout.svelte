@@ -46,7 +46,7 @@
   onMount(async () => {
     if (browser) {
       // Set the current URL in the URL state store
-      urlState.url = page.url.hostname.endsWith('/') ? page.url.pathname.slice(0,-1) : page.url.pathname;
+      urlState.url = page.url.hostname.endsWith('/') ? page.url.hostname.slice(0,-1) : page.url.hostname;
       // Wait for auth store to initialize from localStorage
       if ($authStore.loading) {
         const unsubscribe = authStore.subscribe(state => {
