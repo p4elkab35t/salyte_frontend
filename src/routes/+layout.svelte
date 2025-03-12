@@ -68,7 +68,7 @@
       const isValid = await AuthAPI.verifyToken();
       
       // If invalid token, redirect to login if not already there
-      if (!isValid && !page.url.pathname.startsWith('/signin') && !page.url.pathname.startsWith('/signup') && page.url.pathname !== '/') {
+      if (!isValid && !page.url.pathname.startsWith('/signin') && !page.url.pathname.startsWith('/signup')) {
         const returnUrl = page.url.pathname;
         goto(`/signin${returnUrl ? `?redirect=${encodeURIComponent(returnUrl)}` : ''}`);
         return;
@@ -77,7 +77,7 @@
       // If token is valid, load user data
       if (isValid) {
         await loadUserData();
-        if (page.url.pathname === '/signup' || page.url.pathname === '/signin' || page.url.pathname === '/') {
+        if (page.url.pathname === '/signup' || page.url.pathname === '/signin') {
           goto('/feed');
           return
         }
