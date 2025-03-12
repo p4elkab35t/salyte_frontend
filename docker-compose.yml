@@ -4,7 +4,7 @@ services:
     ports:
       - "80:4173" 
     networks:
-      - salyte
+      - salyte_backend_salyte
     environment:
       - NODE_ENV=production
 
