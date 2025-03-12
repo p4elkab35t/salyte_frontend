@@ -19,7 +19,7 @@ async function authFetch(
     const token = authStore.getToken();
     const userId = authStore.getUserId();
     
-    const API_URL = `http://${urlState}:3000/api/message`;
+    const API_URL = `http://${urlState.url}:3000/api/message`;
     
     if (!token || !userId) {
       return { status: 401, error: 'Not authenticated' };

@@ -26,7 +26,7 @@ export interface AuthResponse {
  */
 async function apiRequest(endpoint: string, options: RequestInit): Promise<AuthResponse> {
   
-    const API_URL = `http://${urlState}:3000/api/secure/auth`;
+    const API_URL = `http://${urlState.url}:3000/api/secure/auth`;
     try {
       const response = await fetch(`${API_URL}${endpoint}`, options);
       const data = await response.json();

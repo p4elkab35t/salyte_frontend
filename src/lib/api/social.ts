@@ -22,7 +22,7 @@ async function authFetch(
     const token = authStore.getToken();
     const localUserID = authStore.getUserId();
 
-    const API_URL = `http://${urlState}:3000/api/social`;
+    const API_URL = `http://${urlState.url}:3000/api/social`;
     
     if (!token || !localUserID) {
       return { status: 401, error: 'Not authenticated' };

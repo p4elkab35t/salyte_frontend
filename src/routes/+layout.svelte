@@ -3,7 +3,7 @@
   import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
   import { page } from '$app/state';
-  import { urlState, setUrl } from '$lib/stores/url.svelte';
+  import { urlState } from '$lib/stores/url.svelte';
   import { authStore } from '$lib/stores/auth';
   import { AuthAPI } from '$lib/api/auth';
   import { SocialAPI } from '$lib/api/social';
@@ -46,7 +46,7 @@
   onMount(async () => {
     if (browser) {
       // Set the current URL in the URL state store
-      setUrl();
+      urlState.url = page.url.hostname.endsWith('/') ? page.url.pathname.slice(0,-1) : page.url.pathname;
       // Wait for auth store to initialize from localStorage
       if ($authStore.loading) {
         const unsubscribe = authStore.subscribe(state => {
