@@ -1,26 +1,29 @@
-# Use the official Bun image
-FROM oven/bun:canary-alpine
+# Use an official Node.js runtime as a parent image
+ARG BASE_IMAGE="node:23-slim"
+FROM ${BASE_IMAGE}
 
-# Set the working directory
-WORKDIR /app/frontend
+# Set the working directory inside the container
+WORKDIR /usr/app
 
-# Copy package files first (better for caching layers)
-COPY package*.json bun.lock *config.* ./  
+# Copy package.json and package-lock.json (if available) to the working directory
+COPY package*.json ./
+
+RUN npm install -g bun
 
 # Install dependencies
-RUN bun install
+RUN bun i
 
-# Copy the rest of the application code
-COPY . /app/frontend/
+# Copy the rest of your application's source code to the working directory
+COPY . .
 
-# Generate SvelteKit types
-RUN bun run prepare
-
-# Build the Svelte application
+# Build the project (if needed)
 RUN bun run build
 
-# Expose port 80
+# Expose the port that your application runs on
 EXPOSE 80
 
+# Define environment variables
+ENV NODE_ENV=production
+
 # Start the application
-CMD ["bun", "run", "start"]
+CMD ["bun", "start"]
