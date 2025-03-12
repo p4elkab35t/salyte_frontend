@@ -9,5 +9,5 @@ services:
       - NODE_ENV=production
 
 networks:
-  salyte:
+  salyte_backend_salyte:
     external: true
