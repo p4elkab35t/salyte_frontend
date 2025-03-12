@@ -1,7 +1,7 @@
 import { authStore } from '../stores/auth';
 import { userProfileStore } from '../stores/user';
 
-const API_URL = '127.0.0.1:3000/api/secure/auth';
+const API_URL = 'http://127.0.0.1:3000/api/secure/auth';
 
 export interface LoginCredentials {
   email: string;
@@ -37,7 +37,7 @@ export const AuthAPI = {
     }
 
     try {
-      const response = await fetch(`https://${API_URL}/signin`, {
+      const response = await fetch(`${API_URL}/signin`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`
