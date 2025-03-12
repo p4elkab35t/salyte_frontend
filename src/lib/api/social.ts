@@ -1,6 +1,7 @@
 import { authStore } from '../stores/auth';
+import { backendUrl } from './API_URL';
 
-const API_URL = 'http://gateway:3000/api/social';
+const API_URL = `http://${backendUrl}:3000/api/social`;
 
 interface ApiResponse {
   status?: number;
