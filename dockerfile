@@ -6,13 +6,13 @@ FROM oven/bun:canary-alpine
 WORKDIR /app/frontend
 
 # Copy package.json and bun.lockb
-COPY package.json bun.lock ./
+COPY package.json bun.lock /app/frontend/
 
 # Install dependencies
 RUN bun install
 
 # Copy the rest of the application code
-COPY . .
+COPY . /app/frontend/
 
 # Generate SvelteKit types and config
 RUN bun run prepare
