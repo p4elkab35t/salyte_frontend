@@ -11,14 +11,14 @@ COPY package.json bun.lock /app/frontend/
 # Install dependencies
 RUN bun install
 
-RUN chown vite:vite /app/frontend
+RUN chown vite:vite /app/frontend -R
 
 USER vite
 
 # Copy the rest of the application code
 COPY . /app/frontend/
 
-COPY --chown=vite:vite /app/frontend/node_modules/ ./node_modules/
+# COPY --chown=vite:vite /app/frontend/node_modules/ ./node_modules/
 
 # Generate SvelteKit types and config
 RUN bun run prepare
