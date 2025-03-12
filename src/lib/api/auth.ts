@@ -1,7 +1,6 @@
 import { authStore } from '../stores/auth';
 import { userProfileStore } from '../stores/user';
-import { page } from '$app/state';
-import { browser } from 'process';
+import { urlState } from '$lib/stores/url';
 // import { backendUrl } from './API_URL';
 
 export interface LoginCredentials {
@@ -26,10 +25,8 @@ export interface AuthResponse {
  * Middleware to handle API requests
  */
 async function apiRequest(endpoint: string, options: RequestInit): Promise<AuthResponse> {
-    let hostname = page.url.hostname;
-    hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
   
-    const API_URL = `http://${hostname}:3000/api/secure/auth`;
+    const API_URL = `http://${urlState}:3000/api/secure/auth`;
     try {
       const response = await fetch(`${API_URL}${endpoint}`, options);
       const data = await response.json();

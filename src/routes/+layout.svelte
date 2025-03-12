@@ -2,7 +2,8 @@
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
+  import { urlState, setUrl } from '$lib/stores/url';
   import { authStore } from '$lib/stores/auth';
   import { AuthAPI } from '$lib/api/auth';
   import { SocialAPI } from '$lib/api/social';
@@ -44,6 +45,8 @@
 
   onMount(async () => {
     if (browser) {
+      // Set the current URL in the URL state store
+      setUrl();
       // Wait for auth store to initialize from localStorage
       if ($authStore.loading) {
         const unsubscribe = authStore.subscribe(state => {
@@ -65,8 +68,8 @@
       const isValid = await AuthAPI.verifyToken();
       
       // If invalid token, redirect to login if not already there
-      if (!isValid && !$page.url.pathname.startsWith('/signin') && !$page.url.pathname.startsWith('/signup') && $page.url.pathname !== '/') {
-        const returnUrl = $page.url.pathname;
+      if (!isValid && !page.url.pathname.startsWith('/signin') && !page.url.pathname.startsWith('/signup') && page.url.pathname !== '/') {
+        const returnUrl = page.url.pathname;
         goto(`/signin${returnUrl ? `?redirect=${encodeURIComponent(returnUrl)}` : ''}`);
         return;
       }
@@ -74,11 +77,11 @@
       // If token is valid, load user data
       if (isValid) {
         await loadUserData();
-        if ($page.url.pathname === '/signup' || $page.url.pathname === '/signin' || $page.url.pathname === '/') {
+        if (page.url.pathname === '/signup' || page.url.pathname === '/signin' || page.url.pathname === '/') {
           goto('/feed');
           return
         }
-        goto($page.url.pathname);
+        goto(page.url.pathname);
         return
       }
     }

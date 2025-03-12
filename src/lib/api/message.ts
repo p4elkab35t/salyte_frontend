@@ -1,5 +1,5 @@
 import { authStore } from '../stores/auth';
-import { page } from '$app/state';  
+import { urlState } from '$lib/stores/url';
 // import { backendUrl } from './API_URL';
 
 interface ApiResponse {
@@ -19,10 +19,7 @@ async function authFetch(
     const token = authStore.getToken();
     const userId = authStore.getUserId();
     
-    let hostname = page.url.hostname;
-    hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
-    
-    const API_URL = `http://${hostname}:3000/api/message`;
+    const API_URL = `http://${urlState}:3000/api/message`;
     
     if (!token || !userId) {
       return { status: 401, error: 'Not authenticated' };
