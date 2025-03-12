@@ -3,7 +3,7 @@ FROM oven/bun:canary-alpine
 
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /app/frontend
 
 # Copy package.json and bun.lockb
 COPY package.json bun.lock ./
