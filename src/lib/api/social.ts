@@ -1,10 +1,7 @@
 import { authStore } from '../stores/auth';
 // import { backendUrl } from './API_URL';
 
-let hostname = window.location.hostname;
-hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
 
-const API_URL = `http://${hostname}:3000/api/social`;
 
 interface ApiResponse {
   status?: number;
@@ -23,6 +20,11 @@ async function authFetch(
 ): Promise<ApiResponse> {
   const token = authStore.getToken();
   const localUserID = authStore.getUserId();
+
+  let hostname = window.location.hostname;
+  hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
+
+  const API_URL = `http://${hostname}:3000/api/social`;
   
   if (!token || !localUserID) {
     return { status: 401, error: 'Not authenticated' };
