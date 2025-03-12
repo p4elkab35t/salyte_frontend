@@ -13,8 +13,8 @@ RUN npm install -g bun
 # Install dependencies
 RUN bun i
 
-ARG SVELTE_APP_BACKEND_URL
-ENV SVELTE_APP_BACKEND_URL=$SVELTE_APP_BACKEND_URL
+ARG PUBLIC_BACKEND_URL
+ENV PUBLIC_BACKEND_URL=$PUBLIC_BACKEND_URL
 
 # Copy the rest of your application's source code to the working directory
 COPY . .

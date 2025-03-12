@@ -1,7 +1,8 @@
 import { authStore } from '../stores/auth';
 import { userProfileStore } from '../stores/user';
+import { backendUrl } from './API_URL';
 
-const API_URL = 'http://gateway:3000/api/secure/auth';
+const API_URL = `http://${backendUrl}:3000/api/secure/auth`;
 
 export interface LoginCredentials {
   email: string;

@@ -1,0 +1,1 @@
+export const backendUrl = process.env.PUBLIC_BACKEND_URL || 'http://localhost';
