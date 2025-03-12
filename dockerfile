@@ -11,17 +11,20 @@ COPY package.json bun.lock /app/frontend/
 # Install dependencies
 RUN bun install
 
-RUN chown root:root /app/frontend -R
-
-USER root
+RUN whoami
 
 # Copy the rest of the application code
 COPY . /app/frontend/
 
 # COPY --chown=vite:vite /app/frontend/node_modules/ ./node_modules/
+RUN ls -la
+RUN whoami
 
 # Generate SvelteKit types and config
 RUN bun run prepare
+
+RUN whoami
+RUN ls -la
 
 # Build the Svelte application
 RUN bun run build
