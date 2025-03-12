@@ -17,9 +17,8 @@ RUN whoami
 COPY . /app/frontend/
 
 # COPY --chown=vite:vite /app/frontend/node_modules/ ./node_modules/
-RUN echo $(ls -la)
-RUN echo $(whoami)
-
+RUN sh -c 'ls -al'
+RUN sh -c 'whoami'
 # Generate SvelteKit types and config
 RUN bun run prepare
 
