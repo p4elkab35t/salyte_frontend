@@ -3,7 +3,7 @@
   import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
   import { page } from '$app/state';
-  import { urlState, setUrl } from '$lib/stores/url';
+  import { urlState, setUrl } from '$lib/stores/url.svelte';
   import { authStore } from '$lib/stores/auth';
   import { AuthAPI } from '$lib/api/auth';
   import { SocialAPI } from '$lib/api/social';

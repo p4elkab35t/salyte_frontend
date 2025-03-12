@@ -1,5 +1,5 @@
 import { authStore } from '../stores/auth';
-import { urlState } from '$lib/stores/url';
+import { urlState } from '$lib/stores/url.svelte';
 // import { backendUrl } from './API_URL';
 
 
