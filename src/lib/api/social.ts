@@ -1,6 +1,5 @@
 import { authStore } from '../stores/auth';
 import { page } from '$app/state';
-import { browser } from 'process';
 // import { backendUrl } from './API_URL';
 
 
@@ -20,7 +19,6 @@ async function authFetch(
   method: string = 'GET', 
   body?: object
 ): Promise<ApiResponse> {
-  if(browser){
     const token = authStore.getToken();
     const localUserID = authStore.getUserId();
 
@@ -55,8 +53,6 @@ async function authFetch(
       console.error(`API error (${endpoint}):`, error);
       return { status: 500, error: 'Network or server error' };
     }
-  }
-  return { status: 405, error: 'Request Outisde of browser' };
 }
 
 /**

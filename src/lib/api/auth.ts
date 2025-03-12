@@ -26,7 +26,6 @@ export interface AuthResponse {
  * Middleware to handle API requests
  */
 async function apiRequest(endpoint: string, options: RequestInit): Promise<AuthResponse> {
-  if(browser){
     let hostname = page.url.hostname;
     hostname = hostname.endsWith('/') ? hostname.slice(0, -1) : hostname;
   
@@ -46,8 +45,6 @@ async function apiRequest(endpoint: string, options: RequestInit): Promise<AuthR
       console.error('API request error:', error);
       return { status: 1, error: 'Network or server error' };
     }
-  }
-  return { status: 1, error: 'Network or server error' };
 }
 
 /**
