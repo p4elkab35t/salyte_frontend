@@ -11,9 +11,9 @@ COPY package.json bun.lock /app/frontend/
 # Install dependencies
 RUN bun install
 
-RUN chown vite:vite /app/frontend -R
+RUN chown root:root /app/frontend -R
 
-USER vite
+USER root
 
 # Copy the rest of the application code
 COPY . /app/frontend/
