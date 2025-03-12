@@ -1,7 +1,6 @@
 <script lang="ts">
-    import { user } from "$lib/stores/user.svelte";
+    import { userProfileStore } from "$lib/stores/user";
 	import { onMount } from "svelte";
-	import { on } from "svelte/events";
 
     interface BubbleProps {
         profilePic: string;
@@ -16,7 +15,7 @@
     let { profilePic, message, name, timestamp, profileID, isRead }: BubbleProps = $props();
 
     onMount(() => {
-        if (user.profile_id === name) {
+        if (userProfileStore.getProfile().profileId === profileID) {
             isLeft = true;
         }
     });

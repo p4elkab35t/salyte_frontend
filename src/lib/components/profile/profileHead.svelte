@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { user } from "$lib/stores/user.svelte";
+    // import { user } from "$lib/stores/user.svelte";
+    import { userProfileStore } from "$lib/stores/user";
 	import { onMount } from "svelte";
 
     interface profileHeadProps {
@@ -17,12 +18,14 @@
     let isOwner = $state(false);
 
     const profileProps: profileHeadProps = $props();
+    
+    let user = userProfileStore.getProfile();
 
     onMount(() => {
         name = profileProps.name;
         bio = profileProps.bio;
         profilePic = profileProps.profilePic;
-        if(user.profile_id === profileProps.profileId) isOwner = true;
+        if(user.profileId === profileProps.profileId) isOwner = true;
     });
 
     const saveChanges = () => {
@@ -45,7 +48,7 @@
             <hr class="border-zinc-600" />
             <label for="name">
                 Name:
-                <input class="bg-white border p-0.5 w-full" type="text" bind:value={user.name} placeholder="Your name" />
+                <input class="bg-white border p-0.5 w-full" type="text" bind:value={user.displayName} placeholder="Your name" />
             </label>
             
             <label for="bio">
@@ -55,7 +58,7 @@
             
             <label for="profilePic">
                 Profile Picture URL:
-                <input class="bg-white border p-0.5 w-full" type="url" bind:value={user.profile_picture} placeholder="Profile Picture URL" />
+                <input class="bg-white border p-0.5 w-full" type="url" bind:value={user.avatar} placeholder="Profile Picture URL" />
             </label>
             
         </div>

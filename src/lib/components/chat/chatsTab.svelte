@@ -40,7 +40,7 @@
         <!-- <button class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded cursor-pointer">New Chat</button> -->
     </div>
     <div class="flex flex-col bg-zinc-100">
-        {#each chats as chat}
+        {#each chats as chat (chat.chatID)}
         <a href="/message/{chat.chatID}">
             <div class="flex relative items-center justify-between gap-2 pl-2 pr-6 pb-2 pt-2 cursor-pointer hover:bg-zinc-200" >
                 <div class="flex flex-row gap-2 max-w-full">

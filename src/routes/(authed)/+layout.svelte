@@ -1,13 +1,5 @@
 <script lang="ts">
 	import Nav from '$lib/components/nav/nav.svelte';
-	import { user } from '$lib/stores/user.svelte';
-
-	const profileData = {
-		name: user.name,
-		profilePic: user.profile_picture,
-		profileID: user.profile_id,
-		bio: '<3 you'
-	};
 
 	let { children } = $props();
 </script>

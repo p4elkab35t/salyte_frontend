@@ -12,21 +12,22 @@
 
   let { children } = $props();
   // For tracking authentication status
-  let authInitialized = false;
+  let authInitialized = $state(false);
 
   // Load user data when authenticated
   async function loadUserData() {
     if ($authStore.isAuthenticated && $authStore.userId) {
       try {
         // Fetch the user profile from social API
-        const profileResponse = await SocialAPI.getProfile();
+        const profileResponse = await SocialAPI.getProfile('user', $authStore.userId);
         if (profileResponse && !profileResponse.error) {
           userProfileStore.setProfile({
             userId: $authStore.userId,
-            email: typeof profileResponse.email === 'string' ? profileResponse.email : null,
-            displayName: typeof profileResponse.displayName === 'string' ? profileResponse.displayName : null,
-            avatar: typeof profileResponse.avatar === 'string' ? profileResponse.avatar : null,
-            bio: typeof profileResponse.bio === 'string' ? profileResponse.bio : null
+            profileId: typeof profileResponse.ProfileID === 'string' ? profileResponse.ProfileID : null,
+            // email: typeof profileResponse.email === 'string' ? profileResponse.email : null,
+            displayName: typeof profileResponse.Username === 'string' ? profileResponse.Username : null,
+            avatar: typeof profileResponse.ProfilePictureURL === 'string' ? profileResponse.ProfilePictureURL : null,
+            bio: typeof profileResponse.Bio === 'string' ? profileResponse.Bio : null
           });
         }
       } catch (error) {
@@ -67,8 +68,16 @@
       // If token is valid, load user data
       if (isValid) {
         await loadUserData();
+        if ($page.url.pathname === '/signup' || $page.url.pathname === '/signin' || $page.url.pathname === '/') {
+          goto('/feed');
+          return
+        }
+        goto($page.url.pathname);
+        return
       }
     }
+    goto('/login');
+    return;
     // If on a protected page without auth, hooks.server.ts will redirect
   }
 </script>

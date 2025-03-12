@@ -13,7 +13,7 @@
 
     function likePost() {
         isLiked = !isLiked;
-        isLiked ? likeCount++ : likeCount--;
+        // isLiked ? likeCount++ : likeCount--;
     }
     
 </script>

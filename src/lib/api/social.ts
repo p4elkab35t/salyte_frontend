@@ -55,10 +55,8 @@ export const SocialAPI = {
   /**
    * Get user profile. If an override is provided, use it.
    */
-  async getProfile(userIDOverride?: string): Promise<ApiResponse> {
-    return userIDOverride
-      ? authFetch(`/profile?userID=${userIDOverride}`)
-      : authFetch('/profile');
+  async getProfile(switchUserProfile: string, ID: string): Promise<ApiResponse> {
+    return authFetch(`/profile?${switchUserProfile}ID=${ID}`);
   },
   
   /**
@@ -115,6 +113,33 @@ export const SocialAPI = {
    */
   async updateCommunity(communityId: string, communityData: object): Promise<ApiResponse> {
     return authFetch('/community', 'PUT', { communityId, ...communityData });
+  },
+
+  /**
+   * Get single post
+   * Pass postId as a query parameter.
+   */
+
+  async getPost(postId: string): Promise<ApiResponse> {
+    return authFetch(`/post?postID=${postId}`);
+  },
+
+  /**
+   * Get all posts by a user
+   * Pass profileID as a query parameter.
+   */
+
+  async getUserPosts(profileID: string): Promise<ApiResponse> {
+    return authFetch(`/post/user?profileID=${profileID}`);
+  },
+
+  /**
+   * Get comments for a post
+   * Pass postId as a query parameter.
+   */
+
+  async getComments(postId: string): Promise<ApiResponse> {
+    return authFetch(`/post/comments?postID=${postId}`);
   },
   
   /**

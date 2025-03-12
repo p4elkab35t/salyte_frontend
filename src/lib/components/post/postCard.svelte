@@ -3,7 +3,8 @@
     import CommentCard from './commentCard.svelte';
     import ProfileCard from '../profile/profileCard.micro.svelte';
     import type { profileProps } from '../profile/profileCard.micro.svelte';
-    import { user } from '$lib/stores/user.svelte';
+    // import { user } from '$lib/stores/user.svelte';
+    import { userProfileStore } from '$lib/stores/user';
 
     let isAuthor = $state(false);
     let isInEditMode = $state(false);
@@ -46,23 +47,23 @@
         isPage?: boolean;
     }
 
-    const saveContent = ()=>{
-        console.log(newContent);
-    }
+    // const saveContent = ()=>{
+    //     console.log(newContent);
+    // }
 
     let postData: changeablePostData | undefined = $state();
 
-    $inspect(postData).with(console.trace);
+    // $inspect(postData).with(console.trace);
     
 
-    function likePost() {
-        if(!postData) return;
-        postData.reaction.isLiked = !postData.reaction.isLiked;
-        postData.reaction.isLiked ? postData.reaction.count++ : postData.reaction.count--;
-    }
+    // function likePost() {
+    //     if(!postData) return;
+    //     postData.reaction.isLiked = !postData.reaction.isLiked;
+    //     postData.reaction.isLiked ? postData.reaction.count++ : postData.reaction.count--;
+    // }
 
     $effect(()=>{
-        author.profileID === user.profile_id ? isAuthor = true : isAuthor = false;
+        isAuthor = author.profileID === userProfileStore.getProfile().profileId;
 
         postData = ({
             content: content,
@@ -73,7 +74,7 @@
     })
 
 
-    const { author, timestamp, title, content, reaction, lastComment, commentsNumber, postId, children, isPage }: PostCardProps = $props();
+    const { author, timestamp, content, reaction, lastComment, commentsNumber, postId, children, isPage }: PostCardProps = $props();
 </script>
 
 <div class="bg-white shadow-lg rounded-none p-4 border border-gray-200 lg:w-auto w-screen my-2">

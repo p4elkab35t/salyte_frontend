@@ -2,6 +2,7 @@ import { writable, get } from 'svelte/store';
 
 export interface UserProfile {
   userId: string | null;
+  profileId: string | null;
   email: string | null;
   displayName: string | null;
   avatar: string | null;
@@ -11,6 +12,7 @@ export interface UserProfile {
 
 const initialProfile: UserProfile = {
   userId: null,
+  profileId: null,
   email: null,
   displayName: null,
   avatar: null,

@@ -2,13 +2,13 @@
 	import ProfileCard from './profileCard.mini.svelte';
 
 	export interface profileProps {
-		name: string;
-		bio?: string;
-		profilePic: string;
+		name: string | null;
+		bio?: string | null;
+		profilePic: string | null;
 		communities?: string[];
 		friends?: string[];
 		posts?: string[];
-		profileID: string;
+		profileID: string | null;
 	}
 
 	let { name, profilePic, profileID, bio }: profileProps = $props();

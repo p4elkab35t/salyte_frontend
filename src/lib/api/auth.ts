@@ -25,6 +25,43 @@ export interface AuthResponse {
  * Handle authentication API calls
  */
 export const AuthAPI = {
+
+  /**
+   * Sign in with token
+   */
+
+  async loginWithToken(): Promise<AuthResponse> {
+    const { token } = authStore.getToken() ? { token: authStore.getToken() } : { token: null };
+    if (!token) {
+      return { status: 1, error: 'No token found' };
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/signin`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.status === 0) {
+        authStore.setAuth(data.token, data.user_id);
+        return data;
+      } else {
+        return { 
+          status: data.status || 1, 
+          error: data.error || 'Authentication failed' 
+        };
+      }
+
+    } catch (error) {
+      console.error('Login error:', error);
+      return { status: 1, error: 'Network or server error' };
+    }
+  },
+
   /**
    * Sign in with email and password
    */

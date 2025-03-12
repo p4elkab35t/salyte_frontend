@@ -1,20 +1,21 @@
 <script lang="ts">
-	import { user } from '$lib/stores/user.svelte';
+	import { userProfileStore } from '$lib/stores/user';
 	import { goto } from '$app/navigation';
 	import InteractionButton from '../general/interactionButton.svelte';
 
+	let user = userProfileStore.getProfile();
 	interface profileProps {
-		name: string;
-		profilePic: string;
-		profileID: string;
-		bio?: string;
+		name?: string | null;
+		profilePic?: string | null;
+		profileID?: string | null;
+		bio?: string | null;
 	}
 
 	let isMe = $state(false);
 
 	let { name, profilePic, profileID, bio }: profileProps = $props();
 
-	if (profileID == user.profile_id) {
+	if (profileID == user.profileId) {
 		isMe = true;
 	}
 

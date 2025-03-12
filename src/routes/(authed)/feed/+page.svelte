@@ -13,7 +13,7 @@
         <textarea class="border border-zinc-600 min-h-[60px] text-zinc-800 p-3 rounded-sm" placeholder="What's new?"></textarea>
         <button class="bg-amber-500 text-white p-2 min-w-full md:min-w-[180px] md:w-min rounded-md cursor-pointer hover:bg-amber-600">Post</button>
     </div>
-    {#each data.posts as post}
+    {#each data.posts as post (post.id)}
         <PostCard {...post} />
     {/each}
 </main>
