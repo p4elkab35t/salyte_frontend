@@ -59,9 +59,9 @@
       const isValid = await AuthAPI.verifyToken();
       
       // If invalid token, redirect to login if not already there
-      if (!isValid && !$page.url.pathname.startsWith('/login')) {
+      if (!isValid && !$page.url.pathname.startsWith('/signin') && !$page.url.pathname.startsWith('/signup')) {
         const returnUrl = $page.url.pathname;
-        goto(`/login${returnUrl ? `?redirect=${encodeURIComponent(returnUrl)}` : ''}`);
+        goto(`/signin${returnUrl ? `?redirect=${encodeURIComponent(returnUrl)}` : ''}`);
         return;
       }
       
@@ -76,7 +76,7 @@
         return
       }
     }
-    goto('/login');
+    goto('/signin');
     return;
     // If on a protected page without auth, hooks.server.ts will redirect
   }
