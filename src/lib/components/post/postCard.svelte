@@ -30,6 +30,16 @@
         isPage?: boolean;
         children?: any;
     }
+    
+    interface updatePostType {
+      ProfileID?: string;
+      PostID?: string;
+      Content: string;
+      Visibility?: string;
+      CommunityID?: string;
+      CreatedAt?: string;
+      UpdatedAt?: string;
+    }
 
     const { authorId, timestamp, content, postId, isPage, children }: PostCardProps = $props();
 
@@ -49,8 +59,35 @@
     }
 
     const submitEdit = async () => {
-        console.log('submitting edit');
-        console.log(newContent);
+        if(!newContent) return;
+        const updatePostData: updatePostType = {
+            Content: newContent,
+            Visibility: 'public',
+            PostID: postId
+        }
+        SocialAPI.updatePost(postId, updatePostData).then((res) => {
+            if(res.error) {
+                throw new Error(res.error);
+            }
+            if(!postData) return;
+            postData.content = newContent;
+            isInEditMode = false;
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
+    const deletePost = async (deletePostId: string) => {
+        SocialAPI.deletePost(deletePostId).then((res) => {
+            if(res.error) {
+                throw new Error(res.error);
+            }
+            if(!postData) return;
+            postData.content = 'This is post is deleted';
+            isAuthor = false;
+        }).catch((error) => {
+            console.error(error);
+        });
     }
 
     // export interface PostCardProps {
@@ -135,7 +172,7 @@
                 <p class="text-gray-700">{postData.content}</p>
             {:else}
                 <textarea class="w-full h-24 border border-gray-200 rounded-md p-2 text-zinc-800" bind:value={postData.content}></textarea>
-                <button class="bg-amber-600 text-white rounded-md px-4 py-2 mt-2" onclick={() => isInEditMode = false}>Save</button>
+                <button class="bg-amber-600 text-white rounded-md px-4 py-2 mt-2" onclick={() => submitEdit()}>Save</button>
             {/if}
         {:else}
             <h1>Loading...</h1>
@@ -151,7 +188,7 @@
         {#if isAuthor}
             <div class="pt-5 flex flex-row gap-4">
                 <button class="text-gray-500 hover:underline cursor-pointer text-md" onclick={()=>isInEditMode = !isInEditMode}>Edit</button>
-                <button class="text-red-500 hover:underline cursor-pointer text-md" onclick={()=>console.log('delete')}>Delete</button>
+                <button class="text-red-500 hover:underline cursor-pointer text-md" onclick={()=>deletePost(postId)}>Delete</button>
             </div>
         {/if}
      </div>
