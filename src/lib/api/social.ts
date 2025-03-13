@@ -195,7 +195,7 @@ export const SocialAPI = {
     const params = new URLSearchParams();
     if (options.userId) params.append('profileID', options.userId);
     if (options.communityId) params.append('communityID', options.communityId);
-    if (options.page) params.append('page', options.page.toString());
+    if (options.page || options.page===0) params.append('page', options.page.toString());
     if (options.limit) params.append('limit', options.limit.toString());
     return authFetch(`/post?${params.toString()}`, undefined, undefined, nocache);
   },
