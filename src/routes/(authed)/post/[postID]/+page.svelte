@@ -23,8 +23,8 @@
     // });
     let isSendng = $state(false)
     
-    const syncComments = async (PostID: string) => {
-        return SocialAPI.getComments(PostID).then((res) => {
+    const syncComments = async (PostID: string, nocache?:boolean) => {
+        return SocialAPI.getComments(PostID, nocache).then((res) => {
             commentSection = res;
         });
     }
@@ -57,7 +57,7 @@
                 if(res.error) {
                     throw new Error(res.error);
                 }
-                syncComments(postID);
+                syncComments(postID, true);
             }).finally(() => {
                 isSendng = false;
                 newCommentContent = '';

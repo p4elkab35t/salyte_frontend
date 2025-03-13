@@ -3,7 +3,7 @@
     import type { PageProps } from "./$types";
     import { SocialAPI } from "$lib/api/social";
     import { onMount } from "svelte";
-	import { page } from "$app/state";
+	// import { page } from "$app/state";
 
     let { data }: PageProps = $props();
 
@@ -25,8 +25,8 @@
         Visibility?: string;
     }
 
-    const syncPosts = async (pageToFetch: number) => {
-        return SocialAPI.getPosts({page: pageToFetch, limit: 5}).then((res) => {
+    const syncPosts = async (pageToFetch: number, nocache?: boolean) => {
+        return SocialAPI.getPosts({page: pageToFetch, limit: 5}, nocache).then((res) => {
             if(res.length === 0) {
                 return [];
             }
@@ -52,7 +52,7 @@
                 }
                 currentPage = 1;
                 postSection = [];
-                syncPosts(currentPage);
+                syncPosts(currentPage, true);
             });
         } catch (error) {
             console.error(error);

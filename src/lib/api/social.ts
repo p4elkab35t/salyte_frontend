@@ -18,7 +18,8 @@ interface ApiResponse {
 async function authFetch(
   endpoint: string, 
   method: string = 'GET', 
-  body?: object
+  body?: object,
+  nocache: boolean=false,
 ): Promise<ApiResponse> {
     const token = authStore.getToken();
     const localUserID = authStore.getUserId();
@@ -41,7 +42,7 @@ async function authFetch(
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
-          'Cache-Control': 'min-fresh=30'
+          'Cache-Control': `${nocache?"no-cache":"min-fresh=30"}`
         },
         body: body ? JSON.stringify(body) : undefined
       });
@@ -85,8 +86,8 @@ export const SocialAPI = {
   /**
    * Get user profile. If an override is provided, use it.
    */
-  async getProfile(switchUserProfile: string, ID: string): Promise<ApiResponse> {
-    return authFetch(`/profile?${switchUserProfile}ID=${ID}`);
+  async getProfile(switchUserProfile: string, ID: string, nocache?:boolean): Promise<ApiResponse> {
+    return authFetch(`/profile?${switchUserProfile}ID=${ID}`, undefined, undefined, nocache);
   },
   
   /**
@@ -164,8 +165,8 @@ export const SocialAPI = {
    * Pass postId as a query parameter.
    */
 
-  async getPost(postId: string): Promise<ApiResponse> {
-    return authFetch(`/post?postID=${postId}`);
+  async getPost(postId: string, nocache?: boolean): Promise<ApiResponse> {
+    return authFetch(`/post?postID=${postId}`, undefined, undefined, nocache);
   },
 
   /**
@@ -182,21 +183,21 @@ export const SocialAPI = {
    * Pass postId as a query parameter.
    */
 
-  async getComments(postId: string): Promise<ApiResponse> {
-    return authFetch(`/post/comments?postID=${postId}`);
+  async getComments(postId: string, nocache?:boolean): Promise<ApiResponse> {
+    return authFetch(`/post/comments?postID=${postId}`, undefined, undefined, nocache);
   },
   
   /**
    * Get posts.
    * When filtering by user, use the query key "profileID" (as expected by backend).
    */
-  async getPosts(options: { userId?: string, communityId?: string, page?: number, limit?: number } = {}): Promise<ApiResponse> {
+  async getPosts(options: { userId?: string, communityId?: string, page?: number, limit?: number } = {}, nocache?: boolean): Promise<ApiResponse> {
     const params = new URLSearchParams();
     if (options.userId) params.append('profileID', options.userId);
     if (options.communityId) params.append('communityID', options.communityId);
     if (options.page) params.append('page', options.page.toString());
     if (options.limit) params.append('limit', options.limit.toString());
-    return authFetch(`/post?${params.toString()}`);
+    return authFetch(`/post?${params.toString()}`, undefined, undefined, nocache);
   },
   
   /**
@@ -247,8 +248,8 @@ export const SocialAPI = {
   /**
    * Get likes for a post
    */
-  async getLikes(postId: string): Promise<ApiResponse> {
-    return authFetch(`/post/likes?postID=${postId}`);
+  async getLikes(postId: string, nocache?:boolean): Promise<ApiResponse> {
+    return authFetch(`/post/likes?postID=${postId}`, undefined, undefined, nocache);
   },
   
   /**
