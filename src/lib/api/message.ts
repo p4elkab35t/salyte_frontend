@@ -1,5 +1,6 @@
 import { authStore } from '../stores/auth';
 import { urlState } from '$lib/stores/url.svelte';
+import { userProfileStore } from '$lib/stores/user';
 // import { backendUrl } from './API_URL';
 
 interface ApiResponse {
@@ -89,7 +90,8 @@ export const MessageAPI = {
    * Get all user's chats
    */
   async getAllChats(): Promise<ApiResponse> {
-    return authFetch('/getAllChats');
+    const profileID = userProfileStore.getProfile().profileId;
+    return authFetch(`/getAllChats?profile_id=${profileID}`);
   },
   
   /**
