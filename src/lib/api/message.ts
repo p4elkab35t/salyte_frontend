@@ -53,8 +53,8 @@ export const MessageAPI = {
   /**
    * Get messages by chat ID
    */
-  async getMessagesByChatID(chatId: string): Promise<ApiResponse> {
-    return authFetch(`/getMessagesByChatID?chat_id=${chatId}`);
+  async getMessagesByChatID(chatId: string, limit: number, page: number): Promise<ApiResponse> {
+    return authFetch(`/getMessagesByChatID?chat_id=${chatId}`, 'GET', { 'limit':limit, 'offset':page });
   },
   
   /**
@@ -125,5 +125,12 @@ export const MessageAPI = {
    */
   async getReactions(messageId: string): Promise<ApiResponse> {
     return authFetch(`/getReactions?message_id=${messageId}`);
+  },
+
+  /**
+   * Get chat by members (2 members)
+   */
+  async getChatByMembers(member_id: string): Promise<ApiResponse> {
+    return authFetch(`/getChatByMembers?&member_id=${member_id}`);
   }
 };
