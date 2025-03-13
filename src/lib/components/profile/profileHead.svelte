@@ -114,6 +114,15 @@
     const followUser = async () => {
         profileData.isFollowing = true;
         SocialAPI.followUser(profileProps.profileId).then((res) => {
+            if(!userProfileStore.getProfile().followingIDs)
+            {
+                userProfileStore.setProfile({
+                    followingIDs: [profileProps.profileId]
+                });
+            }
+            userProfileStore.setProfile({
+                followingIDs: [...userProfileStore.getProfile().followingIDs, profileProps.profileId]
+            });
             if(res != null && res != undefined && res.error)
             {
                 throw new Error(res.error);
@@ -127,6 +136,15 @@
     const unfollowUser = async () => {
         profileData.isFollowing = false;
         SocialAPI.unfollowUser(profileProps.profileId).then((res) => {
+            if(!userProfileStore.getProfile().followingIDs)
+            {
+                userProfileStore.setProfile({
+                    followingIDs: []
+                });
+            }
+            userProfileStore.setProfile({
+                followingIDs: userProfileStore.getProfile().followingIDs.filter((id) => id !== profileProps.profileId)
+            });
             if(res != null && res != undefined && res.error)
             {
                 throw new Error(res.error);

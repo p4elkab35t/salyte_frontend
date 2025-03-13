@@ -3,8 +3,11 @@
 	import { goto } from '$app/navigation';
 	import InteractionButton from '../general/interactionButton.svelte';
 	import { onMount } from 'svelte';
+	import { SocialAPI } from '$lib/api/social';
 
 	let user = userProfileStore.getProfile();
+
+	let isFollowing = $state(false);
 	interface profileProps {
 		name?: string | null;
 		profilePic?: string | null;
@@ -21,6 +24,60 @@
 	const followLink = (link: string) => {
 		goto(link);
 	};
+
+	const followUser = async () => {
+        isFollowing = true;
+		if(!profileID)
+		{
+			console.error('Profile ID is not defined');
+			return;
+		}
+        SocialAPI.followUser(profileID).then((res) => {
+            if(!userProfileStore.getProfile().followingIDs )
+            {
+                userProfileStore.setProfile({
+                    followingIDs: [profileID]
+                });
+            }
+            userProfileStore.setProfile({
+                followingIDs: [...userProfileStore.getProfile().followingIDs, profileID]
+            });
+            if(res != null && res != undefined && res.error)
+            {
+                throw new Error(res.error);
+            }
+        }).catch((error) => {
+            isFollowing = false;
+            console.error(error);
+        });
+    }
+
+    const unfollowUser = async () => {
+        isFollowing = false;
+		if(!profileID)
+		{
+			console.error('Profile ID is not defined');
+			return;
+		}
+        SocialAPI.unfollowUser(profileID).then((res) => {
+            if(!userProfileStore.getProfile().followingIDs)
+            {
+                userProfileStore.setProfile({
+                    followingIDs: []
+                });
+            }
+            userProfileStore.setProfile({
+                followingIDs: userProfileStore.getProfile().followingIDs.filter((id) => id !== profileID)
+            });
+            if(res != null && res != undefined && res.error)
+            {
+                throw new Error(res.error);
+            }
+        }).catch((error) => {
+            isFollowing = true;
+            console.error(error);
+        });
+    }
 
 	onMount(() => {
 		userProfileStore.subscribe((userProfile) => {
@@ -49,7 +106,11 @@
                     /> -->
                     <!-- <a href="/profile/{profileID}/settings" class="bg-amber-500 hover:bg-amber-600 font-bold py-2 px-4 rounded">Settings</a> -->
                 {:else}
-                    <InteractionButton buttonText="Follow" submitFunction={() => {}} />
+				{#if isFollowing}
+					<InteractionButton buttonText="Unfollow" submitFunction={unfollowUser} />
+				{:else}
+                    <InteractionButton buttonText="Follow" submitFunction={followUser} />
+				{/if}
                     <InteractionButton
                         buttonText="Message"
                         submitFunction={() => followLink(`/message/${profileID}`)}
