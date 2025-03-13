@@ -1,17 +1,14 @@
 import type { PageLoad } from './$types';
 import { MessageAPI } from '$lib/api/message';
+import { userProfileStore } from '$lib/stores/user';
 
 export const load: PageLoad = async ({ params }) => {
-	// Fetch the chat using API instead of mockData
-	const chatResponse = await MessageAPI.getChat(params.chatID);
-	if (chatResponse.error) {
-		return { status: 404, error: new Error(`Chat not found`) };
-	}
-
-	// Optionally, fetch a list of chats for sidebar view
-	const chatsResponse = await MessageAPI.getAllChats();
-	return {
-		chat: chatResponse,
-		chats: chatsResponse
-	};
+	// get the chat ID from the url
+	const chatID = params.chatID;
+	// fetch the chat messages
+	const messages = await MessageAPI.getMessagesByChatID(chatID, 20, 1);
+	// fetch the user profile
+	const user = userProfileStore.getProfile();
+	// return the messages and user profile
+	return { props: { messages, user } };
 };
