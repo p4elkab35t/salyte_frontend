@@ -60,11 +60,11 @@
 
 </style>
 
-<div class="w-full flex flex-row justify-between">
-    <div class="flex items-center gap-3">
+<div class="w-full flex flex-row justify-between bg-zinc-100 p-4">
+    <div class="flex items-start justify-start gap-3">
         <ProfileCard {name} {profilePic} {profileID} {bio} />
     </div>
-    <div class="flex flex-row gap-4 min-w-1">
+    <div class="flex flex-row items-end justify-end gap-4 min-w-1">
         {#if !isOwner}
             {#if isFollowing}
                 <button class="bg-amber-500 hover:bg-amber-600 font-bold py-2 px-4 rounded" onclick={unfollowUser}>Unfollow</button>
