@@ -90,7 +90,7 @@
 </style>
 
 <div class="profile-card w-full flex flex-row gap-10 border border-zinc-600 text-zinc-800 p-4 rounded-sm bg-zinc-300">
-    <img class="profile-pic w-32 h-32 border rounded-sm" src={profileData.profilePic || 'default.jpg'} alt="{name}'s profile picture" />
+    <img class="profile-pic w-32 h-32 object-cover border rounded-sm" src={profileData.profilePic || 'default.jpg'} alt="{name}'s profile picture" />
     <div class="flex flex-col justify-between gap-4">
     {#if editing}
         <div class="flex flex-col">

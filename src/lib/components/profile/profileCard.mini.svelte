@@ -31,7 +31,7 @@
 <div class="card w-[90svw] lg:w-auto lg:min-w-3xs border border-zinc-600 text-zinc-600 p-4 rounded-sm z-100 lg:absolute bg-zinc-50">
 	<div class="flex items-center">
 		<a href="/profile/{profileID}" class="flex items-center w-full">
-			<img src={profilePic} alt="{name}'s profile picture" class="rounded-sm h-18 w-18" />
+			<img src={profilePic} alt="{name}'s profile picture" class="rounded-sm h-18 w-18 object-cover" />
 			<div class="ml-4 text-center w-full">
 				<h1 class="text-lg font-bold">{name}</h1>
 				<p class="text-sm text-gray-500">{bio}</p>

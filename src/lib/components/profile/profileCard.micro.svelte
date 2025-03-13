@@ -28,7 +28,7 @@
 		<img
 			src={profilePic}
 			alt="{name}'s profile picture"
-			class="rounded-md w-13 h-13 border-2 border-[#212121] group-hover:border-1 group-hover:scale-105 transition-all"
+			class="rounded-md w-13 h-13 object-cover border-2 border-[#212121] group-hover:border-1 group-hover:scale-105 transition-all"
 		/>
 	</button>
 	{#if isClicked}
