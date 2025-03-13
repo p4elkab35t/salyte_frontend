@@ -11,9 +11,9 @@
 
     let newPostData = $state('');
 
-    let currentPage = $state(0);
+    let currentPage = $state(1);
 
-    let sentinel: HTMLElement;
+    let sentinel: HTMLElement | null = $state(null);
     
     let reachedTheEnd = $state(false);
     
@@ -25,14 +25,10 @@
         Visibility?: string;
     }
 
-    const syncPosts = async (currentPage: number) => {
-        return SocialAPI.getPosts({page: currentPage, limit: 5}).then((res) => {
+    const syncPosts = async (pageToFetch: number) => {
+        return SocialAPI.getPosts({page: pageToFetch, limit: 5}).then((res) => {
             if(res.length === 0) {
                 return [];
-            }
-            if(currentPage === 0){
-                postSection = res;
-                return res;
             }
             postSection.push(...res);
             return res;
@@ -54,7 +50,9 @@
                 if(res.error) {
                     throw new Error(res.error);
                 }
-                syncPosts(0);
+                currentPage = 1;
+                postSection = [];
+                syncPosts(currentPage);
             });
         } catch (error) {
             console.error(error);
@@ -101,7 +99,7 @@
         <button class="bg-amber-500 text-white p-2 min-w-full md:min-w-[180px] md:w-min rounded-md cursor-pointer hover:bg-amber-600" onclick={()=>{createPost(newPostData)}}>Post</button>
     </div>
 
-    {#await syncPosts(0)}
+    {#await syncPosts(1)}
         <h1>Loading...</h1>
     {:then posts}
         {#each postSection as post (post.PostID)}

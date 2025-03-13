@@ -180,7 +180,6 @@ export const SocialAPI = {
     if (options.communityId) params.append('communityID', options.communityId);
     if (options.page) params.append('page', options.page.toString());
     if (options.limit) params.append('limit', options.limit.toString());
-    
     return authFetch(`/post?${params.toString()}`);
   },
   
