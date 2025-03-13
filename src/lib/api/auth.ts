@@ -160,7 +160,8 @@ export const AuthAPI = {
     const options = {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Cache-Control': 'min-fresh=30'
       }
     };
 
