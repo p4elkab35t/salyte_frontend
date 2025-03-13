@@ -69,6 +69,13 @@
             profileData.name = user.displayName ? user.displayName : profileData.name;
             profileData.bio = user.bio ? user.bio : profileData.bio;
             profileData.profilePic = user.avatar ? user.avatar : profileData.profilePic;
+            userProfileStore.setProfile({
+                userId: user.profileId,
+                profileId: user.profileId,
+                displayName: user.displayName,
+                avatar: user.avatar,
+                bio: user.bio,
+            });
         }).catch((error) => {
             console.error(error);
         }).finally(() => {
