@@ -7,6 +7,7 @@ export interface UserProfile {
   displayName: string | null;
   avatar: string | null;
   bio: string | null;
+  followingIDs?: string[];
   // Add other profile fields as needed
 }
 
@@ -16,7 +17,8 @@ const initialProfile: UserProfile = {
   email: null,
   displayName: null,
   avatar: null,
-  bio: null
+  bio: null,
+  followingIDs: [],
 };
 
 function createUserProfileStore() {

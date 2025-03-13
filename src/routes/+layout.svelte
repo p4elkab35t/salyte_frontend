@@ -21,14 +21,17 @@
       try {
         // Fetch the user profile from social API
         const profileResponse = await SocialAPI.getProfile('user', $authStore.userId);
-        if (profileResponse && !profileResponse.error) {
+        if (profileResponse && !profileResponse.error && typeof profileResponse.ProfileID == 'string') {
+          let following = await SocialAPI.getFollowing(profileResponse.ProfileID);
+          const followingIDs = following.map(f => f.ProfileID);
           userProfileStore.setProfile({
             userId: $authStore.userId,
             profileId: typeof profileResponse.ProfileID === 'string' ? profileResponse.ProfileID : null,
             // email: typeof profileResponse.email === 'string' ? profileResponse.email : null,
             displayName: typeof profileResponse.Username === 'string' ? profileResponse.Username : null,
             avatar: typeof profileResponse.ProfilePictureURL === 'string' ? profileResponse.ProfilePictureURL : null,
-            bio: typeof profileResponse.Bio === 'string' ? profileResponse.Bio : null
+            bio: typeof profileResponse.Bio === 'string' ? profileResponse.Bio : null,
+            followingIDs: followingIDs,
           });
           console.log(userProfileStore.getProfile());
         }
