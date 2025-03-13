@@ -66,7 +66,7 @@
             PostID: postId
         }
         SocialAPI.updatePost(postId, updatePostData).then((res) => {
-            if(res.error) {
+            if('error' in res) {
                 throw new Error(res.error);
             }
             if(!postData) return;
@@ -79,7 +79,7 @@
 
     const deletePost = async (deletePostId: string) => {
         SocialAPI.deletePost(deletePostId).then((res) => {
-            if(res.error) {
+            if('error' in res) {
                 throw new Error(res.error);
             }
             if(!postData) return;
