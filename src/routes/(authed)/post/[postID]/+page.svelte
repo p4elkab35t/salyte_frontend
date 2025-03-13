@@ -87,7 +87,7 @@
         {#await syncComments(currentPost.PostID)}
             <h1>Loading comments...</h1>
         {:then commentsSynced}
-            {#if commentSection.length > 0}
+            {#if commentSection && commentSection.length > 0}
                 <div class="pl-6 pr-2">
                     {#each commentSection as comment}
                         <CommentCard authorID={comment.ProfileID} timestamp={comment.CreatedAt} content={comment.Content}/>

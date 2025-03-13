@@ -172,7 +172,7 @@
             {#if comments && Array.isArray(comments)}
                 <div class="mt-4">
                     {#if comments.length > 0}
-                        <CommentCard authorID={comments[comments.length-1].ProfileID} content={comments[comments.length-1].Content} timestamp={comments[comments.length-1].CreatedAt}/>
+                        <CommentCard authorID={comments[0].ProfileID} content={comments[0].Content} timestamp={comments[0].CreatedAt}/>
                     {:else}
                         <h1>No comments yet</h1>
                     {/if}
