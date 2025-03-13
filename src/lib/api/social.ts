@@ -191,21 +191,21 @@ export const SocialAPI = {
    * Add comment to post
    */
   async addComment(postId: string, content: string): Promise<ApiResponse> {
-    return authFetch('/post/comment', 'POST', { postId, content });
+    return authFetch(`/post/comment`, 'POST', { postId, content });
   },
   
   /**
    * Update comment
    */
   async updateComment(commentId: string, content: string): Promise<ApiResponse> {
-    return authFetch('/post/comment', 'PUT', { commentId, content });
+    return authFetch(`/post/comment?commentID=${commentId}`, 'PUT', { content });
   },
   
   /**
    * Delete comment
    */
   async deleteComment(commentId: string): Promise<ApiResponse> {
-    return authFetch('/post/comment', 'DELETE', { commentId });
+    return authFetch(`/post/comment?commentID=${commentId}`, 'DELETE', { commentId });
   },
   
   /**
@@ -219,13 +219,13 @@ export const SocialAPI = {
    * Like a post
    */
   async likePost(postId: string): Promise<ApiResponse> {
-    return authFetch('/post/like', 'POST', { postId });
+    return authFetch(`/post/like?postID=${postId}`, 'POST');
   },
   
   /**
    * Unlike a post
    */
   async unlikePost(postId: string): Promise<ApiResponse> {
-    return authFetch('/post/like', 'DELETE', { postId });
+    return authFetch(`/post/like?postID=${postId}`, 'DELETE');
   }
 };

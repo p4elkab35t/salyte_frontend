@@ -1,14 +1,19 @@
 <script lang="ts">
+    import { SocialAPI } from '$lib/api/social';
     import ProfileCard from '../profile/profileCard.micro.svelte';
     import type { profileProps } from '../profile/profileCard.micro.svelte';
 
     export interface CommentCardProps {
-        author: profileProps;
+        authorID: string;
         timestamp: string;
         content: string;
     }
 
-    const { author, timestamp, content }: CommentCardProps = $props();
+    const getAuthor = async (profileId: string) => {
+        return SocialAPI.getProfile('profile', profileId);
+    }
+
+    const { authorID, timestamp, content }: CommentCardProps = $props();
 </script>
 
 <style>
@@ -41,7 +46,11 @@
 <div class="comment-card">
     <!-- Comment Header -->
     <div class="comment-header">
-        <ProfileCard name={author.name} profilePic={author.profilePic} profileID={author.profileID} bio={author.bio} />
+        {#await getAuthor(authorID)}
+            <h1>Loading...</h1>
+        {:then author}
+            <ProfileCard name={author.Username} profilePic={author.ProfilePictureURL} profileID={author.ProfileID} bio={author.Bio} />
+        {/await}
         <span class="comment-timestamp">{timestamp}</span>
     </div>
 
