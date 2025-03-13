@@ -72,6 +72,8 @@
                 <button class="bg-amber-500 hover:bg-amber-600 font-bold py-2 px-4 rounded" onclick={followUser}>Follow</button>
             {/if}
             <button class="bg-amber-500 hover:bg-amber-600 font-bold py-2 px-4 rounded" onclick={()=>{goto(`/message/${profileID}`)}}>Message</button>
+        {:else}
+            <h2 class="text-zinc-700 text-center p-2">You</h2>
         {/if}
     </div>
 </div>

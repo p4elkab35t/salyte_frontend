@@ -24,7 +24,7 @@
 		onkeydown={(e) => e.key === 'Enter' && (isClicked = !isClicked)}
 		aria-label="Profile card"
 	>
-        <h1 class="text-md font-semibold ">{name}</h1>
+        <h1 class="text-md font-semibold max-w-20 min-w-20" style="text-overflow:fade;">{name}</h1>
 		<img
 			src={profilePic}
 			alt="{name}'s profile picture"
