@@ -62,7 +62,9 @@
     onMount(() => {
         const observer = new IntersectionObserver(
             (entries) => {
+                console.log('entries', entries);
                 entries.forEach((entry) => {
+                    console.log('entry', entry);
                     reachedTheEnd = entry.isIntersecting;
                     if (entry.isIntersecting) {
                         console.log('reached the end');
@@ -78,6 +80,8 @@
                 threshold: 0.1
             }
         );
+
+        console.log('sentinel', sentinel);
 
         if (sentinel) {
             console.log('observing');
