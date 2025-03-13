@@ -2,6 +2,8 @@
     import PostCard from "$lib/components/post/postCard.svelte";
     import type { PageProps } from "./$types";
     import { SocialAPI } from "$lib/api/social";
+    import { onMount } from "svelte";
+	import { page } from "$app/state";
 
     let { data }: PageProps = $props();
 
@@ -9,6 +11,12 @@
 
     let newPostData = $state('');
 
+    let currentPage = $state(0);
+
+    let sentinel: HTMLElement;
+    
+    let reachedTheEnd = $state(false);
+    
     interface postProps {
         ProfileID?: string;
         PostID?: string;
@@ -17,9 +25,17 @@
         Visibility?: string;
     }
 
-    const syncPosts = async () => {
-        return SocialAPI.getPosts().then((res) => {
-            postSection = res;
+    const syncPosts = async (currentPage: number) => {
+        return SocialAPI.getPosts({page: currentPage, limit: 5}).then((res) => {
+            if(res.length === 0) {
+                return [];
+            }
+            if(currentPage === 0){
+                postSection = res;
+                return res;
+            }
+            postSection.push(...res);
+            return res;
         });
     }
 
@@ -44,6 +60,35 @@
             console.error(error);
         }
     }
+
+    onMount(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    reachedTheEnd = entry.isIntersecting;
+                    if (entry.isIntersecting) {
+                        currentPage++;
+                        syncPosts(currentPage);
+                    }
+                });
+            },
+            {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            }
+        );
+
+        if (sentinel) {
+            observer.observe(sentinel);
+        }
+
+        return () => {
+            if (sentinel) {
+                observer.unobserve(sentinel);
+            }
+        };
+    });
 </script>
 
 <main>
@@ -56,7 +101,7 @@
         <button class="bg-amber-500 text-white p-2 min-w-full md:min-w-[180px] md:w-min rounded-md cursor-pointer hover:bg-amber-600" onclick={()=>{createPost(newPostData)}}>Post</button>
     </div>
 
-    {#await syncPosts()}
+    {#await syncPosts(0)}
         <h1>Loading...</h1>
     {:then posts}
         {#each postSection as post (post.PostID)}
@@ -64,6 +109,8 @@
         {/each}
         {#if postSection.length === 0}
             <h1 class="text-zinc-100 text-2xl text-center">No posts to show</h1>
+        {:else}
+            <div bind:this={sentinel}></div>
         {/if}
     {:catch error}
         <h1>Error: {error.message}</h1>
