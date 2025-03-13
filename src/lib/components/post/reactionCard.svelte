@@ -23,6 +23,10 @@
 
     const getReactions = async (postID: string) => {
         return SocialAPI.getLikes(postID).then((res) => {
+            if(!res) {
+                likeCount = 0;
+                return;
+            }
             res.map((reaction) => {
                 if (reaction.ProfileID === userProfileStore.getProfile().profileId) {
                     isLiked = true;

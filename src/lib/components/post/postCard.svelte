@@ -116,7 +116,7 @@
             <span class="text-sm text-gray-600 hover:underline ">{timestamp}</span>
         </div>
     </a>
-        {#await getAuthor(postId)}
+        {#await getAuthor(authorId)}
             <h1>Loading...</h1>
         {:then author}
             {#if author}
