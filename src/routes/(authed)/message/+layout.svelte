@@ -17,7 +17,8 @@
         LastMessageAuthor?: string;
     }
 
-    
+
+    let isLoading = $state(true);
     let chats = $state<chatType[]>([]);
     let { children } = $props();
 
@@ -38,6 +39,9 @@
 // }
 
     const fetchChats = async () => {
+        if(!userProfileStore.getProfile().profileId){
+            return;
+        }
         try {
             await MessageAPI.getAllChats().then((res) => {
                 if(res.error) {
@@ -59,16 +63,21 @@
                                     newChat['LastMessageTime'] = res[0].CreatedAt;
                                     newChat['LastMessageAuthor'] = res[0].SenderID;    
                                 }
-                                chats = [...chats, newChat];
                             }).catch((error) => {
                                 newChat['LastMessage'] = 'Currently no messages yet';
                                 console.error(error);
+                            }).finally(() => {
+                                chats = [...chats, newChat];
+                                console.log(chats);
                             });
+                            
+                            console.log(chats);
                         }
                     });
                 }
             });
         } catch (error) {
+            console.log(chats);
             console.error(error);
         }
     }
@@ -91,7 +100,9 @@
         }
         userProfileStore.subscribe((user)=>{
             if(user.profileId){
+                isLoading = false;
                 fetchChats();
+                console.log(chats);
             }
         });
         
@@ -104,19 +115,21 @@
 
 <div class="flex flex-row md:h-[95svh] h-[98svh]">
     <div class="w-full md:w-2/5 h-full bg-zinc-100">
-        {#await fetchChats()}
-            loading...
-        {:then fetchedChats}
-            {#if chats.length === 0}
-                <p>No chats yet</p>
+        {#if userProfileStore.getProfile().profileId}
+            {#if isLoading}
+                loading...
             {:else}
-                {#each chats as chat}
-                    <ChatCard {...chat} />
-                {/each}
+                {#if chats.length === 0}
+                    <p>No chats yet</p>
+                {:else}
+                    {#each chats as chat}
+                        <ChatCard {...chat} />
+                    {/each}
+                {/if}
             {/if}
-        {:catch error}
-            <p>{error.message}</p>
-        {/await}
+        {:else}
+            <p>Not ready yet</p>
+        {/if}
     </div>
     <div class="w-full md:w-3/5 h-full overflow-y-auto bg-zinc-600">
         {@render children()}
