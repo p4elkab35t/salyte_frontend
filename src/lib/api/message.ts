@@ -66,7 +66,7 @@ export const MessageAPI = {
    * Get messages by chat ID
    */
   async getMessagesByChatID(chatId: string, limit: number, page: number): Promise<ApiResponse> {
-    return authFetch(`/getMessagesByChatID?chat_id=${chatId}`, 'GET', { 'limit':limit, 'offset':page });
+    return authFetch(`/getMessagesByChatID?chat_id=${chatId}&limit=${limit}&offset=${page}`, 'GET');
   },
   
   /**
