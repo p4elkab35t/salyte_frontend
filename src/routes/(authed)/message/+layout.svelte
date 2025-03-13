@@ -43,44 +43,37 @@
             return;
         }
         try {
-            await MessageAPI.getAllChats().then((res) => {
-                if(res.error) {
-                    throw new Error(res.error);
-                }
-                if(Array.isArray(res) || res !== undefined || res !== null || res.length !== 0){
-                    res.map(el => {
-                        if(el && el.ID){
-                            let newChat: { ID: any; Name: any; LastMessage?: string; LastMessageTime?: string; LastMessageAuthor?: string } = {
-                                ID: el.ID,
-                                Name: el.Name,
-                            }
-                            MessageAPI.getMessagesByChatID(el.ID, 1, 0).then((res) => {
-                                if(res.error) {
-                                    throw new Error(res.error);
-                                }
-                                if(res.length !== 0){
-                                    newChat['LastMessage'] = res[0].Content;
-                                    newChat['LastMessageTime'] = res[0].CreatedAt;
-                                    newChat['LastMessageAuthor'] = res[0].SenderID;    
-                                }
-                            }).catch((error) => {
-                                newChat['LastMessage'] = 'Currently no messages yet';
-                                console.error(error);
-                            }).finally(() => {
-                                chats = [...chats, newChat];
-                                console.log(chats);
-                            });
-                            
-                            console.log(chats);
-                        }
-                    });
-                }
-            });
-        } catch (error) {
-            console.log(chats);
-            console.error(error);
+    const res = await MessageAPI.getAllChats();
+    if (res.error) throw new Error(res.error);
+    if (Array.isArray(res) && res.length > 0) {
+      const chatPromises = res.map(el => {
+        if (el && el.ID) {
+          const newChat = { ID: el.ID, Name: el.Name, LastMessage: '', LastMessageTime: '', LastMessageAuthor: '' };
+          return MessageAPI.getMessagesByChatID(el.ID, 1, 0)
+            .then(messages => {
+              if (messages.length > 0) {
+                newChat.LastMessage = messages[0].Content;
+                newChat.LastMessageTime = messages[0].CreatedAt;
+                newChat.LastMessageAuthor = messages[0].SenderID;
+              } else {
+                newChat.LastMessage = 'Currently no messages yet';
+              }
+              return newChat;
+            })
+            .catch(() => ({
+              ...newChat,
+              LastMessage: 'Currently no messages yet',
+            }));
         }
+        return null;
+      }).filter(chat => chat !== null);
+
+      chats = await Promise.all(chatPromises);
     }
+  } catch (error) {
+        console.error(error);
+    }
+}
 
     onMount(() => { 
         let params = page.url.searchParams;
