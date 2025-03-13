@@ -6,6 +6,7 @@
     // import { user } from '$lib/stores/user.svelte';
     import { userProfileStore } from '$lib/stores/user';
     import { SocialAPI } from '$lib/api/social';
+	import { onMount } from 'svelte';
 
     let isAuthor = $state(false);
     let isInEditMode = $state(false);
@@ -14,16 +15,11 @@
 
     interface changeablePostData {
         content: string;
-        reaction: {
-            isLiked: boolean;
-            count: number;
-        };
         lastComment?: {
             author: profileProps;
             content: string;
             timestamp: string;
         };
-        commentsNumber: number;
     }    
 
     export interface PostCardProps {
@@ -52,6 +48,11 @@
         return SocialAPI.getLikes(postID);
     }
 
+    const submitEdit = async () => {
+        console.log('submitting edit');
+        console.log(newContent);
+    }
+
     // export interface PostCardProps {
     //     author: profileProps;
     //     timestamp: string;
@@ -78,6 +79,12 @@
 
     let postData: changeablePostData | undefined = $state();
 
+    onMount(()=>{
+        postData = ({
+            content: content,
+            lastComment: undefined
+        });
+    })
     // $inspect(postData).with(console.trace);
     
 
@@ -103,7 +110,6 @@
 
 <div class="bg-white shadow-lg rounded-none p-4 border border-gray-200 lg:w-auto w-screen my-2">
     <!-- Post Header -->
-    {#if postData}
     <div class="flex flex-row justify-between items-center gap-3 mb-4">
         <a href="/post/{postId}" class="hover:underline">
         <div class="flex flex-col">
@@ -124,11 +130,15 @@
     <hr class="border-zinc-300 py-2" />
     <!-- Post Content -->
     <div class="mb-4">
-        {#if !isInEditMode}
-            <p class="text-gray-700">{postData.content}</p>
+        {#if postData}
+            {#if !isInEditMode}
+                <p class="text-gray-700">{postData.content}</p>
+            {:else}
+                <textarea class="w-full h-24 border border-gray-200 rounded-md p-2 text-zinc-800" bind:value={postData.content}></textarea>
+                <button class="bg-amber-600 text-white rounded-md px-4 py-2 mt-2" onclick={() => isInEditMode = false}>Save</button>
+            {/if}
         {:else}
-            <textarea class="w-full h-24 border border-gray-200 rounded-md p-2 text-zinc-800" bind:value={postData.content}></textarea>
-            <button class="bg-amber-600 text-white rounded-md px-4 py-2 mt-2" onclick={() => isInEditMode = false}>Save</button>
+            <h1>Loading...</h1>
         {/if}
     </div>
     <hr class="border-zinc-300" />
@@ -156,6 +166,8 @@
                 <div class="mt-4">
                     {#if comments.length > 0}
                         <CommentCard commentID={comments[0].CommentID} authorID={comments[0].ProfileID} content={comments[0].Content} timestamp={comments[0].CreatedAt}/>
+                    {:else}
+                        <h1>No comments yet</h1>
                     {/if}
                 </div>
                 {#if comments.length > 1}
@@ -165,8 +177,5 @@
         {:catch error}
             <h1>Error: {error.message}</h1>
         {/await}
-    {/if}
-    {:else}
-        <h1>Post not found</h1>
     {/if}
 </div>
