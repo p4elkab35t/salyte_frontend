@@ -24,8 +24,20 @@
     let isSendng = $state(false)
     
     const syncComments = async (PostID: string) => {
-        return SocialAPI.getComments(PostID);
+        return SocialAPI.getComments(PostID).then((res) => {
+            commentSection = res;
+        });
     }
+
+    interface commentSectionUnit {
+        ProfileID: string;
+        PostID: string;
+        Content: string;
+        CreatedAt: string;
+    }
+
+    let commentSection = $state<commentSectionUnit[]>([]);
+
 
     const sendComment = async (postID: string) => {
         if(newCommentContent === '') return;
@@ -74,10 +86,10 @@
         </PostCard>
         {#await syncComments(currentPost.PostID)}
             <h1>Loading comments...</h1>
-        {:then postComments}
-            {#if postComments}
+        {:then commentsSynced}
+            {#if commentSection.length > 0}
                 <div class="pl-6 pr-2">
-                    {#each postComments as comment}
+                    {#each commentSection as comment}
                         <CommentCard authorID={comment.ProfileID} timestamp={comment.CreatedAt} content={comment.Content}/>
                     {/each}
                 </div>
