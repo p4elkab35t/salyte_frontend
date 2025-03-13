@@ -56,6 +56,13 @@ async function authFetch(
     }
 }
 
+
+interface CommentData {
+  ProfileID: string;
+  PostID: string;
+  Content: string;
+}
+
 /**
  * Social API client
  */
@@ -190,8 +197,9 @@ export const SocialAPI = {
   /**
    * Add comment to post
    */
-  async addComment(postId: string, content: string): Promise<ApiResponse> {
-    return authFetch(`/post/comment`, 'POST', { postId, content });
+
+  async addComment(data: CommentData): Promise<ApiResponse> {
+    return authFetch(`/post/comment`, 'POST', data );
   },
   
   /**

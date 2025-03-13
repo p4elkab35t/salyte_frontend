@@ -6,10 +6,17 @@
 	import { onMount } from "svelte";
     import { SocialAPI } from "$lib/api/social";
 	import type { PageProps, PageData } from './$types';
+    import { userProfileStore } from "$lib/stores/user";
 
     let { data }: PageProps = $props();
     
     let newCommentContent: string = $state('');
+
+    interface newComment {
+        ProfileID: string;
+        PostID: string;
+        Content: string;
+    }
 
     // $effect(() => {
     //     if(data.error) return;
@@ -20,9 +27,21 @@
         if(newCommentContent === '') return;
         try {
             isSendng = true;
-            await SocialAPI.addComment(data.post.PostID, newCommentContent).then((res) => {
+            const userProfileID = userProfileStore.getProfile().profileId;
+            if(!userProfileID){
+                throw new Error('Failed to verify user profile, try again');
+            }
+            const newComment: newComment = {
+                ProfileID: userProfileID,
+                PostID: data.post.PostID,
+                Content: newCommentContent
+            }
+            await SocialAPI.addComment(newComment).then((res) => {
                 console.log(res);
-                
+                if(res.error) {
+                    throw new Error(res.error);
+                }
+                data.comments()
             }).finally(() => {
                 isSendng = false;
                 newCommentContent = '';
