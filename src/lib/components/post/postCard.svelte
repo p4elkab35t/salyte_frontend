@@ -162,10 +162,10 @@
         {#await getComments(postId)}
             <h1>Loading...</h1>
         {:then comments}
-            {#if comments}
+            {#if comments && Array.isArray(comments)}
                 <div class="mt-4">
                     {#if comments.length > 0}
-                        <CommentCard commentID={comments[0].CommentID} authorID={comments[0].ProfileID} content={comments[0].Content} timestamp={comments[0].CreatedAt}/>
+                        <CommentCard authorID={comments[comments.length].ProfileID} content={comments[comments.length].Content} timestamp={comments[comments.length].CreatedAt}/>
                     {:else}
                         <h1>No comments yet</h1>
                     {/if}

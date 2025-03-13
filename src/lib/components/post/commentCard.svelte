@@ -7,14 +7,13 @@
         authorID: string;
         timestamp: string;
         content: string;
-        commentID: string;
     }
 
     const getAuthor = async (profileId: string) => {
         return SocialAPI.getProfile('profile', profileId);
     }
 
-    const { authorID, timestamp, content, commentID }: CommentCardProps = $props();
+    const { authorID, timestamp, content }: CommentCardProps = $props();
 </script>
 
 <style>
@@ -44,7 +43,7 @@
     }
 </style>
 
-<div class="comment-card" id="comment{commentID}">
+<div class="comment-card">
     <!-- Comment Header -->
     <div class="comment-header">
         {#await getAuthor(authorID)}

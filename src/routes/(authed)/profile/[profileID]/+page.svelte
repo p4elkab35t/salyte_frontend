@@ -2,32 +2,14 @@
     import ProfileHead from "$lib/components/profile/profileHead.svelte";
     // import { page } from "$app/state";
 	// import { onMount } from "svelte";
-    import type { PostCardProps } from "$lib/components/post/postCard.svelte";
+    // import type { PostCardProps } from "$lib/components/post/postCard.svelte";
 	import type { PageProps } from './$types';
     import PostCard from "$lib/components/post/postCard.svelte";
 
     let { data }: PageProps = $props();
 
 
-    export interface PostCardProps {
-        author: profileProps;
-        timestamp: string;
-        title: string;
-        content: string;
-        reaction: {
-            isLiked: boolean;
-            count: number;
-        };
-        commentsNumber: number;
-        lastComment?: {
-            author: profileProps;
-            content: string;
-            timestamp: string;
-        };
-        postId: string;
-        children?: any; 
-        isPage?: boolean;
-    }
+
     // $effect(() => {
     //     if(data.error) return;
     // });
