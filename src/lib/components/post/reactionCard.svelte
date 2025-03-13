@@ -16,6 +16,10 @@
 
     const getComments = async (postID: string) => {
         return SocialAPI.getComments(postID).then((res) => {
+            if(!res || res === null || res === undefined || !Array.isArray(res)) {
+                commentCount = 0;
+                return [];
+            }
             commentCount = res.length;
             return res;
         });
