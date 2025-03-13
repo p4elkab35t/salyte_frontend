@@ -165,7 +165,7 @@ export const SocialAPI = {
    * Pass postId as a query parameter.
    */
 
-  async getPost(postId: string, nocache?: boolean): Promise<ApiResponse> {
+  async getPost(postId: string, nocache: boolean=true): Promise<ApiResponse> {
     return authFetch(`/post?postID=${postId}`, undefined, undefined, nocache);
   },
 
@@ -174,8 +174,8 @@ export const SocialAPI = {
    * Pass profileID as a query parameter.
    */
 
-  async getUserPosts(profileID: string): Promise<ApiResponse> {
-    return authFetch(`/post/user?profileID=${profileID}`);
+  async getUserPosts(profileID: string, nocache:boolean=true): Promise<ApiResponse> {
+    return authFetch(`/post/user?profileID=${profileID}`, undefined, undefined, nocache);
   },
 
   /**
@@ -191,7 +191,7 @@ export const SocialAPI = {
    * Get posts.
    * When filtering by user, use the query key "profileID" (as expected by backend).
    */
-  async getPosts(options: { userId?: string, communityId?: string, page?: number, limit?: number } = {}, nocache?: boolean): Promise<ApiResponse> {
+  async getPosts(options: { userId?: string, communityId?: string, page?: number, limit?: number } = {}, nocache: boolean=true): Promise<ApiResponse> {
     const params = new URLSearchParams();
     if (options.userId) params.append('profileID', options.userId);
     if (options.communityId) params.append('communityID', options.communityId);

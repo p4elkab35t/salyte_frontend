@@ -25,7 +25,6 @@
         name: '',
         bio: '',
         profilePic: '',
-        isOwner: false,
         isFollowing: false,
     })
 
@@ -35,15 +34,18 @@
     
     let user = $state(userProfileStore.getProfile());
 
+
+    let isOwner = $state(false);
+
+    userProfileStore.subscribe((userProfile)=>{
+        isOwner = userProfile.profileId === profileProps.profileId;
+    })
+
     onMount(() => {
         user = userProfileStore.getProfile();
         profileData.name = profileProps.name;
         profileData.bio = profileProps.bio;
         profileData.profilePic = profileProps.profilePic;
-        if(user.profileId === profileProps.profileId) 
-        {      
-            profileData.isOwner = true;
-        }
     });
 
     const saveChanges = () => {
@@ -177,7 +179,7 @@
             <h2 class="text-3xl font-bold">{profileData.name}</h2>
             <p class="text-md text-zinc-600">{profileData.bio}</p>
         </div>
-        {#if profileData.isOwner}
+        {#if isOwner}
             <div>
                 <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={() => editing = !editing}>Edit Profile</button>
                 <!-- <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={() => console.log('Go to Settings')}>Settings</button> -->

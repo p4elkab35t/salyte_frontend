@@ -44,14 +44,15 @@
     }
 
     onMount(() => {
-        let user = userProfileStore.getProfile()
-        if(user.followingIDs === null || user.followingIDs === undefined) {
-            isFollowing = false;
-        }
-        else{  
-            isFollowing = user.followingIDs.includes(profileID);
-        }
-        isOwner = user.profileId === profileID;
+        let user = userProfileStore.subscribe((user)=>{
+            if(user.followingIDs === null || user.followingIDs === undefined) {
+                isFollowing = false;
+            }
+            else{  
+                isFollowing = user.followingIDs.includes(profileID);
+            }
+            isOwner = user.profileId === profileID;
+        });
     });
 </script>
 

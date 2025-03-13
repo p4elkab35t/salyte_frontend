@@ -2,6 +2,7 @@
 	import { userProfileStore } from '$lib/stores/user';
 	import { goto } from '$app/navigation';
 	import InteractionButton from '../general/interactionButton.svelte';
+	import { onMount } from 'svelte';
 
 	let user = userProfileStore.getProfile();
 	interface profileProps {
@@ -11,21 +12,21 @@
 		bio?: string | null;
 	}
 
+	
 	let isMe = $state(false);
 
 	let { name, profilePic, profileID, bio }: profileProps = $props();
 
-	if (profileID == user.profileId) {
-		isMe = true;
-	}
-
+	
 	const followLink = (link: string) => {
 		goto(link);
 	};
 
-	const submitToHook = () => {
-		console.log('Submitted to hook');
-	};
+	onMount(() => {
+		userProfileStore.subscribe((userProfile) => {
+			isMe = userProfile.profileId === profileID;
+		});
+	});
 </script>
 
 <div class="card w-[90svw] lg:w-auto lg:min-w-3xs border border-zinc-600 text-zinc-600 p-4 rounded-sm z-100 lg:absolute bg-zinc-50">
@@ -48,7 +49,7 @@
                     /> -->
                     <!-- <a href="/profile/{profileID}/settings" class="bg-amber-500 hover:bg-amber-600 font-bold py-2 px-4 rounded">Settings</a> -->
                 {:else}
-                    <InteractionButton buttonText="Follow" submitFunction={() => submitToHook()} />
+                    <InteractionButton buttonText="Follow" submitFunction={() => {}} />
                     <InteractionButton
                         buttonText="Message"
                         submitFunction={() => followLink(`/message/${profileID}`)}

@@ -15,42 +15,59 @@
   // For tracking authentication status
   let authInitialized = $state(false);
 
-  // Load user data when authenticated
   async function loadUserData() {
     if ($authStore.isAuthenticated && $authStore.userId) {
       try {
-        // Fetch the user profile from social API
-        const profileResponse = await SocialAPI.getProfile('user', $authStore.userId);
-        if (profileResponse && !profileResponse.error && typeof profileResponse.ProfileID == 'string') {
-          let following = await SocialAPI.getFollowing(profileResponse.ProfileID);
-          let followingIDs = [];
-          if(!following || following === null || following === undefined || !Array.isArray(following)) {
-            followingIDs = [];
-          }else{
-            followingIDs = following.map(f => f.ProfileID);
+        await SocialAPI.getProfile('user', $authStore.userId).then((res)=>{
+          if (res && !res.error && typeof res.ProfileID == 'string') {
+            userProfileStore.setProfile({
+              userId: $authStore.userId,
+              profileId: typeof res.ProfileID === 'string' ? res.ProfileID : null,
+              // email: typeof profileResponse.email === 'string' ? profileResponse.email : null,
+              displayName: typeof res.Username === 'string' ? res.Username : null,
+              avatar: typeof res.ProfilePictureURL === 'string' ? res.ProfilePictureURL : null,
+              bio: typeof res.Bio === 'string' ? res.Bio : null,
+            });
+            console.log(userProfileStore.getProfile());
+          };
+          return res;
+        }).then((res) => {
+          // Fetch the user's followers
+          try {
+            SocialAPI.getFollowing(res.ProfileID).then(
+              (res) => {
+                if (res && !res.error && Array.isArray(res)) {
+                  userProfileStore.setProfile({
+                    followingIDs: res.map((follower) => follower.ProfileID),
+                  });
+                }
+              }
+            );
+          } catch (error) {
+            console.error('Failed to get followers:', error);
           }
-          userProfileStore.setProfile({
-            userId: $authStore.userId,
-            profileId: typeof profileResponse.ProfileID === 'string' ? profileResponse.ProfileID : null,
-            // email: typeof profileResponse.email === 'string' ? profileResponse.email : null,
-            displayName: typeof profileResponse.Username === 'string' ? profileResponse.Username : null,
-            avatar: typeof profileResponse.ProfilePictureURL === 'string' ? profileResponse.ProfilePictureURL : null,
-            bio: typeof profileResponse.Bio === 'string' ? profileResponse.Bio : null,
-            followingIDs: followingIDs,
-          });
-          console.log(userProfileStore.getProfile());
-        }
+        });
       } catch (error) {
         console.error('Failed to load user profile:', error);
       }
     }
   }
 
-  // $effect(() => {
-  //   if ($authStore.isAuthenticated && $authStore.userId && $authStore.token) {
-  //     goto('/feed');
-  //   }
-  // });
+  export async function logout() {
+    await AuthAPI.logout().then(() => {
+      $authStore.isAuthenticated = false;
+      $authStore.userId = null;
+      $authStore.token = null;
+      userProfileStore.setProfile({
+        userId: null,
+        profileId: null,
+        displayName: null,
+        avatar: null,
+        bio: null,
+      });
+    });
+    goto('/');
+  }
 
   onMount(async () => {
     if (browser) {
@@ -72,11 +89,9 @@
   });
 
   async function initAuth() {
-    // If we have a token, verify it
     if ($authStore.isAuthenticated) {
       const isValid = await AuthAPI.verifyToken();
       
-      // If invalid token, redirect to login if not already there
       if (!isValid && !page.url.pathname.startsWith('/signin') && !page.url.pathname.startsWith('/signup')) {
         const returnUrl = page.url.pathname;
         goto(`/signin${returnUrl ? `?redirect=${encodeURIComponent(returnUrl)}` : ''}`);
@@ -86,7 +101,7 @@
       // If token is valid, load user data
       if (isValid) {
         await loadUserData();
-        if (page.url.pathname === '/signup' || page.url.pathname === '/signin') {
+        if (page.url.pathname.startsWith('/signup') || page.url.pathname.startsWith('/signin')) {
           goto('/feed');
           return
         }
@@ -94,7 +109,7 @@
         return
       }
     }
-    goto('/signin');
+    goto('/');
     return;
     // If on a protected page without auth, hooks.server.ts will redirect
   }

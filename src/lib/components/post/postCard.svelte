@@ -8,7 +8,7 @@
     import { SocialAPI } from '$lib/api/social';
 	import { onMount } from 'svelte';
 
-    let isAuthor = $state(false);
+    
     let isInEditMode = $state(false);
 
     let newContent = $state('');
@@ -43,12 +43,15 @@
 
     const { authorId, timestamp, content, postId, isPage, children }: PostCardProps = $props();
 
+    let isAuthor = $state(false);
+
     const getAuthor = async (profileId: string) => {
         return SocialAPI.getProfile('profile', profileId).then((res) => {
-            isAuthor = (res.ProfileID === userProfileStore.getProfile().profileId);
             return res;
         });
-    }
+    } 
+
+    
 
     const getComments = async (postID: string) => {
         return SocialAPI.getComments(postID).then((res) => {
@@ -59,10 +62,6 @@
         }).catch((error) => {
             console.error(error);
         });
-    }
-
-    const getReactions = async (postID: string) => {
-        return SocialAPI.getLikes(postID);
     }
 
     const submitEdit = async () => {
@@ -106,6 +105,12 @@
     let postData: changeablePostData | undefined = $state();
 
     onMount(()=>{
+        userProfileStore.subscribe((value) => {
+            if(value.profileId === authorId) {
+                isAuthor = true;
+            }
+        });
+
         postData = ({
             content: content,
             lastComment: undefined
