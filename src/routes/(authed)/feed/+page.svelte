@@ -59,7 +59,10 @@
         }
     }
 
-    const observer = new IntersectionObserver(
+    let observer: IntersectionObserver;
+
+    onMount(() => {
+        observer = new IntersectionObserver(
             (entries) => {
                 console.log('entries', entries);
                 entries.forEach((entry) => {
@@ -79,10 +82,6 @@
                 threshold: 0.1
             }
         );
-
-
-    onMount(() => {
-        
         console.log('sentinel', sentinel);
 
         if (sentinel) {
@@ -99,7 +98,7 @@
     });
 
     $effect(()=>{
-        if(sentinel){
+        if(sentinel && observer){
             console.log('observing');
             observer.observe(sentinel);
         }
