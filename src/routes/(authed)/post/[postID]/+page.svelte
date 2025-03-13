@@ -22,6 +22,10 @@
     //     if(data.error) return;
     // });
     let isSendng = $state(false)
+    
+    const syncComments = async (PostID: string) => {
+        return SocialAPI.getComments(PostID);
+    }
 
     const sendComment = async (postID: string) => {
         if(newCommentContent === '') return;
@@ -41,7 +45,7 @@
                 if(res.error) {
                     throw new Error(res.error);
                 }
-                data.comments()
+                syncComments(postID);
             }).finally(() => {
                 isSendng = false;
                 newCommentContent = '';
@@ -68,7 +72,7 @@
                 <button class="bg-amber-500 text-white p-2 min-w-full md:min-w-[180px] md:w-min rounded-md" onclick={()=>{sendComment(currentPost.PostID)}}>Send Comment</button>
             </div>
         </PostCard>
-        {#await data.comments}
+        {#await syncComments(currentPost.PostID)}
             <h1>Loading comments...</h1>
         {:then postComments}
             {#if postComments}
