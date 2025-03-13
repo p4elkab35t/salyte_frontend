@@ -30,9 +30,10 @@
 
     const profileProps: profileHeadProps = $props();
     
-    let user = userProfileStore.getProfile();
+    let user = $state(userProfileStore.getProfile());
 
     onMount(() => {
+        user = userProfileStore.getProfile();
         profileData.name = profileProps.name;
         profileData.bio = profileProps.bio;
         profileData.profilePic = profileProps.profilePic;
