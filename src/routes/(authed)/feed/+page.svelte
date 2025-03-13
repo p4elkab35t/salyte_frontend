@@ -11,7 +11,7 @@
 
     let newPostData = $state('');
 
-    let currentPage = $state(1);
+    let currentPage = $state(0);
 
     let sentinel: HTMLElement | null = $state(null);
     
@@ -50,7 +50,7 @@
                 if(res.error) {
                     throw new Error(res.error);
                 }
-                currentPage = 1;
+                currentPage = 0;
                 postSection = [];
                 syncPosts(currentPage, true);
             });
@@ -115,7 +115,7 @@
         <button class="bg-amber-500 text-white p-2 min-w-full md:min-w-[180px] md:w-min rounded-md cursor-pointer hover:bg-amber-600" onclick={()=>{createPost(newPostData)}}>Post</button>
     </div>
 
-    {#await syncPosts(1)}
+    {#await syncPosts(0)}
         <h1>Loading...</h1>
     {:then posts}
         {#each postSection as post (post.PostID)}

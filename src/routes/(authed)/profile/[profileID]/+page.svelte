@@ -9,7 +9,6 @@
     let { data }: PageProps = $props();
 
 
-
     // $effect(() => {
     //     if(data.error) return;
     // });
