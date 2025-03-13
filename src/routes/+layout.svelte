@@ -23,7 +23,12 @@
         const profileResponse = await SocialAPI.getProfile('user', $authStore.userId);
         if (profileResponse && !profileResponse.error && typeof profileResponse.ProfileID == 'string') {
           let following = await SocialAPI.getFollowing(profileResponse.ProfileID);
-          const followingIDs = following.map(f => f.ProfileID);
+          let followingIDs = [];
+          if(!following || following === null || following === undefined || !Array.isArray(following)) {
+            followingIDs = [];
+          }else{
+            followingIDs = following.map(f => f.ProfileID);
+          }
           userProfileStore.setProfile({
             userId: $authStore.userId,
             profileId: typeof profileResponse.ProfileID === 'string' ? profileResponse.ProfileID : null,
