@@ -107,6 +107,6 @@
         {/await}
     </div>
     <div>
-        {@render children()}
+        {@render children?.()}
     </div>
 </div>
