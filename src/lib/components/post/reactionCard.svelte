@@ -34,7 +34,23 @@
     }
 
     function likePost() {
-        // isLiked ? likeCount++ : likeCount--;
+        if (isLiked) {
+            isLiked = false;
+            likeCount--;
+            SocialAPI.unlikePost(postId).catch((error) => {
+                isLiked = true;
+                likeCount++;
+                console.error(error);
+            });
+        } else {
+            isLiked = true;
+            likeCount++;
+            SocialAPI.likePost(postId).catch((error) => {
+                isLiked = false;
+                likeCount--;
+                console.error(error);
+            });
+        }
     }
     
 </script>
