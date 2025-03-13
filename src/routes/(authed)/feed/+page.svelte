@@ -54,7 +54,7 @@
                 if(res.error) {
                     throw new Error(res.error);
                 }
-                syncPosts();
+                syncPosts(0);
             });
         } catch (error) {
             console.error(error);
@@ -110,7 +110,7 @@
         {#if postSection.length === 0}
             <h1 class="text-zinc-100 text-2xl text-center">No posts to show</h1>
         {:else}
-            <div bind:this={sentinel}></div>
+            <div class="w-full h-1 border-2" bind:this={sentinel}></div>
         {/if}
     {:catch error}
         <h1>Error: {error.message}</h1>
