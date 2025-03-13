@@ -46,6 +46,9 @@ async function authFetch(
 
       const data = await response.json();
       // if data contains error field
+      if(data !== null){
+        return data;
+    }
       if('error' in data) {
         throw(new Error(data.error));
       }
