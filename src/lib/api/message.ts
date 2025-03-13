@@ -45,7 +45,8 @@ async function authFetch(
         method,
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache'
         },
         body: body ? JSON.stringify(body) : undefined
       });
