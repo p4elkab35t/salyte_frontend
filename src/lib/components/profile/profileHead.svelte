@@ -88,20 +88,25 @@
     }
 
     const getFollowers = async () => {
-        SocialAPI.getFollowers(profileProps.profileId).then((res) => {
-            if(res != null && res != undefined && Array.isArray(res))
+        try{
+            if(userProfileStore.getProfile().followingIDs === null || userProfileStore.getProfile().followingIDs === undefined)
             {
-                let tempProfileId = userProfileStore.getProfile().profileId;
-                res.map((follower)=>{
-                    if(follower.ProfileID === tempProfileId)
-                    {
-                        profileData.isFollowing = true;
-                    }
-                })
+                profileData.isFollowing = false;
+                return;
             }
-        }).catch((error) => {
+            if(!userProfileStore){
+                return;
+            }
+            userProfileStore.getProfile().followingIDs?.forEach((id) => {
+                if(id === profileProps.profileId)
+                {
+                    profileData.isFollowing = true;
+                }
+            })
+        }
+        catch(error) {
             console.error(error);
-        });
+        };
     }
 
     const followUser = async () => {
