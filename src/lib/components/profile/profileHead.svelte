@@ -209,7 +209,7 @@
                 {:else}
                     <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={followUser}>Follow</button>
                 {/if}
-                <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={()=>{goto(`/message/${profileProps.profileId}`)}}>Message</button>
+                <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={()=>{goto(`/message?profileID=${profileProps.profileId}`)}}>Message</button>
             </div>
         {/if}
         <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={()=>{goto(`/profile/${profileProps.profileId}/following`)}}>Following</button>

@@ -59,6 +59,8 @@
                                     newChat['LastMessageAuthor'] = res[0].SenderID;    
                                 }
                                 chats = [...chats, newChat];
+                            }).catch((error) => {
+                                console.error(error);
                             });
                         }
                     });
@@ -95,7 +97,7 @@
 </style>
 
 <div class="flex flex-row md:h-[95svh] h-[98svh]">
-    <div class="w-1/4 bg-zinc-100">
+    <div class="w-full md:w-2/5 h-full bg-zinc-100">
         {#await fetchChats()}
             loading...
         {:then}
@@ -106,7 +108,7 @@
             <p>{error.message}</p>
         {/await}
     </div>
-    <div>
+    <div class="w-full md:w-3/5 h-full overflow-y-auto bg-zinc-600">
         {@render children()}
     </div>
 </div>

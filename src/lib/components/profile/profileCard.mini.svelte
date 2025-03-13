@@ -114,7 +114,7 @@
 				{/if}
                     <InteractionButton
                         buttonText="Message"
-                        submitFunction={() => followLink(`/message/${profileID}`)}
+                        submitFunction={() => followLink(`/message?profileID=${profileID}`)}
                     />
                     <!-- <button class="bg-amber-500 hover:bg-amber-600 font-bold py-2 px-4 rounded">Follow</button>
                     <a href="/message/{profileID}" class="bg-amber-500 hover:bg-amber-600 font-bold py-2 px-4 rounded">Message</a> -->
