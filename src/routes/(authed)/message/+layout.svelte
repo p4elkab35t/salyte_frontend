@@ -106,10 +106,14 @@
     <div class="w-full md:w-2/5 h-full bg-zinc-100">
         {#await fetchChats()}
             loading...
-        {:then}
-            {#each chats as chat}
-                <ChatCard {...chat} />
-            {/each}
+        {:then fetchedChats}
+            {#if chats.length === 0}
+                <p>No chats yet</p>
+            {:else}
+                {#each chats as chat}
+                    <ChatCard {...chat} />
+                {/each}
+            {/if}
         {:catch error}
             <p>{error.message}</p>
         {/await}
