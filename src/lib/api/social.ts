@@ -1,5 +1,6 @@
 import { authStore } from '../stores/auth';
 import { urlState } from '$lib/stores/url.svelte';
+// import { profile } from 'console';
 // import { backendUrl } from './API_URL';
 
 
@@ -107,7 +108,21 @@ export const SocialAPI = {
   async unfollowUser(targetUserId: string): Promise<ApiResponse> {
     return authFetch('/follow', 'DELETE', { targetUserId });
   },
-  
+
+  /**
+   * Get following list
+   */
+
+  async getFollowing(profileID: string): Promise<ApiResponse> {
+    return authFetch(`/following?profileID=${profileID}`, 'GET');
+  },
+
+  /**
+   * Get followers list
+   */
+  async getFollowers(profileID: string): Promise<ApiResponse> {
+    return authFetch(`/followers?profileID=${profileID}`, 'GET');
+  },
   /**
    * Get friends list
    */

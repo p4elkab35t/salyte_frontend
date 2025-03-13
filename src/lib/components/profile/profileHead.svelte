@@ -3,6 +3,8 @@
     import { userProfileStore } from "$lib/stores/user";
 	import { onMount } from "svelte";
     import { SocialAPI } from "$lib/api/social";
+	import { profile } from "console";
+	import { goto } from "$app/navigation";
 
     interface profileHeadProps {
         profileId: string;
@@ -24,6 +26,7 @@
         bio: '',
         profilePic: '',
         isOwner: false,
+        isFollowing: false,
     })
 
     let editing = $state(false);
@@ -84,6 +87,49 @@
         });
     }
 
+    const getFollowers = async () => {
+        SocialAPI.getFollowers(profileProps.profileId).then((res) => {
+            if(res != null && res != undefined && Array.isArray(res))
+            {
+                let tempProfileId = userProfileStore.getProfile().profileId;
+                res.map((follower)=>{
+                    if(follower.ProfileID === tempProfileId)
+                    {
+                        profileData.isFollowing = true;
+                    }
+                })
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
+    const followUser = async () => {
+        profileData.isFollowing = true;
+        SocialAPI.followUser(profileProps.profileId).then((res) => {
+            if(res != null && res != undefined && res.error)
+            {
+                throw new Error(res.error);
+            }
+        }).catch((error) => {
+            profileData.isFollowing = false;
+            console.error(error);
+        });
+    }
+
+    const unfollowUser = async () => {
+        profileData.isFollowing = false;
+        SocialAPI.unfollowUser(profileProps.profileId).then((res) => {
+            if(res != null && res != undefined && res.error)
+            {
+                throw new Error(res.error);
+            }
+        }).catch((error) => {
+            profileData.isFollowing = true;
+            console.error(error);
+        });
+    }
+
 </script>
 
 <style>
@@ -129,12 +175,16 @@
             </div>
         {:else}
             <div>
-                <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={() => console.log('Follow')}>Follow</button>
-                <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={() => console.log('Message')}>Message</button>
-                <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={() => console.log('See Following')}>Following</button>
-                <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={() => console.log('See Followers')}>Followers</button>
+                {#if profileData.isFollowing}
+                    <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={unfollowUser}>Unfollow</button>
+                {:else}
+                    <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={followUser}>Follow</button>
+                {/if}
+                <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={()=>{goto(`/message/${profileProps.profileId}`)}}>Message</button>
             </div>
         {/if}
+        <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={()=>{goto(`/profile/${profileProps.profileId}/following`)}}>Following</button>
+        <button class="py-2 px-4 bg-amber-600 text-zinc-100 hover:bg-amber-700 cursor-pointer" onclick={()=>{goto(`/profile/${profileProps.profileId}/followers`)}}>Followers</button>
     {/if}
     </div>
   </div>
