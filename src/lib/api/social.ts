@@ -99,14 +99,14 @@ export const SocialAPI = {
    * Follow a user
    */
   async followUser(targetUserId: string): Promise<ApiResponse> {
-    return authFetch('/follow', 'POST', { targetUserId });
+    return authFetch(`/follow?profileID=${targetUserId}`, 'POST');
   },
   
   /**
    * Unfollow a user
    */
   async unfollowUser(targetUserId: string): Promise<ApiResponse> {
-    return authFetch('/follow', 'DELETE', { targetUserId });
+    return authFetch(`/follow?profileID=${targetUserId}`, 'DELETE');
   },
 
   /**
