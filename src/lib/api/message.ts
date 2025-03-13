@@ -27,8 +27,19 @@ async function authFetch(
     }
     
     try {
+
+      // test endpoint for user_id param with regex
+      const regex = /user_id=/i;
+      const hasUserID = regex.test(endpoint);
       // Add userID to endpoint
-      const url = `${API_URL}${endpoint}${endpoint.includes('?') ? '&' : '?'}user_id=${userId}`;
+      let url: string;
+      if (!hasUserID) {
+        url = `${API_URL}${endpoint}${endpoint.includes('?') ? '&' : '?'}user_id=${userId}`;
+      }
+      else {
+        url = `${API_URL}${endpoint}`;
+      }
+      
       
       const response = await fetch(url, {
         method,
@@ -91,7 +102,7 @@ export const MessageAPI = {
    */
   async getAllChats(): Promise<ApiResponse> {
     const profileID = userProfileStore.getProfile().profileId;
-    return authFetch(`/getAllChats?profile_id=${profileID}`);
+    return authFetch(`/getAllChats?user_id=${profileID}`);
   },
   
   /**

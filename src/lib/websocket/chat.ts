@@ -25,7 +25,7 @@ export function createChatStore(chatId: string) {
   });
 
   let socket: WebSocket | null = null;
-  let reconnectInterval: number | undefined = undefined;
+  let reconnectInterval: Timer | undefined = undefined;
   
   function connect() {
     if (!browser) return;
