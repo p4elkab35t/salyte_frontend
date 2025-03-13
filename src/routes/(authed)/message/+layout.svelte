@@ -6,6 +6,7 @@
     import { MessageAPI } from "$lib/api/message";
 	import { goto } from "$app/navigation";
     import ChatCard from "$lib/components/chat/chatCard.svelte";
+	import { userProfileStore } from "$lib/stores/user";
 
 
     interface chatType {
@@ -88,7 +89,11 @@
                 console.error(error);
             })
         }
-        fetchChats();
+        userProfileStore.subscribe((user)=>{
+            if(user.profileId){
+                fetchChats();
+            }
+        });
         
     });
 </script>
