@@ -63,6 +63,16 @@ interface CommentData {
   Content: string;
 }
 
+interface postData {
+  ProfileID?: string;
+  PostID?: string;
+  Content: string;
+  Visibility?: string;
+  CommunityID?: string;
+  CreatedAt?: string;
+  UpdatedAt?: string;
+}
+
 /**
  * Social API client
  */
@@ -174,7 +184,7 @@ export const SocialAPI = {
   /**
    * Create post
    */
-  async createPost(postData: object): Promise<ApiResponse> {
+  async createPost(postData: postData): Promise<ApiResponse> {
     return authFetch('/post', 'POST', postData);
   },
   

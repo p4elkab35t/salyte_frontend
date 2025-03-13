@@ -14,6 +14,7 @@
         PostID?: string;
         CreatedAt?: string;
         Content: string;
+        Visibility?: string;
     }
 
     const syncPosts = async () => {
@@ -29,7 +30,8 @@
             const newPost: postProps = {
                 ProfileID: profileId,
                 PostID: postId,
-                Content: content
+                Content: content,
+                Visibility: 'public'
             }
             await SocialAPI.createPost(newPost).then((res) => {
                 console.log(res);
