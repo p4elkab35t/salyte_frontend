@@ -65,6 +65,7 @@
                 entries.forEach((entry) => {
                     reachedTheEnd = entry.isIntersecting;
                     if (entry.isIntersecting) {
+                        console.log('reached the end');
                         reachedTheEnd = true;
                         currentPage++;
                         syncPosts(currentPage);
@@ -79,11 +80,13 @@
         );
 
         if (sentinel) {
+            console.log('observing');
             observer.observe(sentinel);
         }
 
         return () => {
             if (sentinel) {
+                console.log('unobserving');
                 observer.unobserve(sentinel);
             }
         };
