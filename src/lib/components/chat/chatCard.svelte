@@ -14,7 +14,7 @@
 
 </style>
 
-<a href={`/chat/${ID}`} class="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+<a href={`/message/${ID}`} class="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200">
     <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
         {Name.substring(0, 2).toUpperCase()}
     </div>
