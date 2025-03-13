@@ -130,6 +130,10 @@
         });
     }
 
+    onMount(() => {
+        getFollowers();
+    });
+
 </script>
 
 <style>
