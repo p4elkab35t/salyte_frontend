@@ -23,7 +23,7 @@
     // });
     let isSendng = $state(false)
 
-    const sendComment = async () => {
+    const sendComment = async (postID: string) => {
         if(newCommentContent === '') return;
         try {
             isSendng = true;
@@ -33,7 +33,7 @@
             }
             const newComment: newComment = {
                 ProfileID: userProfileID,
-                PostID: data.post.PostID,
+                PostID: postID,
                 Content: newCommentContent
             }
             await SocialAPI.addComment(newComment).then((res) => {
@@ -65,7 +65,7 @@
         <PostCard authorId={currentPost.ProfileID} timestamp={currentPost.CreatedAt} content={currentPost.Content} postId={currentPost.PostID}  isPage={true}>
             <div class="flex flex-col gap-4 py-6">
                 <textarea class="border border-gray-200 min-h-[60px] text-zinc-800 p-3" bind:value={newCommentContent} disabled={isSendng}></textarea>
-                <button class="bg-amber-500 text-white p-2 min-w-full md:min-w-[180px] md:w-min rounded-md" onclick={()=>{sendComment()}}>Send Comment</button>
+                <button class="bg-amber-500 text-white p-2 min-w-full md:min-w-[180px] md:w-min rounded-md" onclick={()=>{sendComment(currentPost.PostID)}}>Send Comment</button>
             </div>
         </PostCard>
         {#await data.comments}
