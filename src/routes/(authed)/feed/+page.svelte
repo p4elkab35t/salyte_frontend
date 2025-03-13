@@ -65,6 +65,7 @@
                 entries.forEach((entry) => {
                     reachedTheEnd = entry.isIntersecting;
                     if (entry.isIntersecting) {
+                        reachedTheEnd = true;
                         currentPage++;
                         syncPosts(currentPage);
                     }
