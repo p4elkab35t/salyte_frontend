@@ -37,11 +37,10 @@
 		bio: string | null;
 	}
 	let user = $state<userProfile>();
-	onMount(() => {
-		// console.log(profile);
-		user = userProfileStore.getProfile();
-	// console.log(user);
+	userProfileStore.subscribe(userProfile => {
+		user = userProfile;
 	});
+	
 </script>
 
 <nav class="bg-zinc-400 max-h-20">
