@@ -212,7 +212,7 @@ export const SocialAPI = {
    * Get likes for a post
    */
   async getLikes(postId: string): Promise<ApiResponse> {
-    return authFetch(`/post/likes?postId=${postId}`);
+    return authFetch(`/post/likes?postID=${postId}`);
   },
   
   /**

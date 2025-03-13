@@ -6,7 +6,7 @@ export const load: PageLoad = async ({ params }) => {
 	const profileResponse = SocialAPI.getProfile('profile', params.profileID);
 
 	// Fetch posts by this profile from API
-	const postsResponse = SocialAPI.getPosts({userId: params.profileID});
+	const postsResponse = SocialAPI.getUserPosts(params.profileID);
 	return {
 		profile: profileResponse,
 		posts: postsResponse

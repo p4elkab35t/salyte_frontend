@@ -23,9 +23,9 @@
 
     const getReactions = async (postID: string) => {
         return SocialAPI.getLikes(postID).then((res) => {
-            if(!res) {
+            if(!res || res === null || res === undefined || !Array.isArray(res)) {
                 likeCount = 0;
-                return;
+                return [];
             }
             res.map((reaction) => {
                 if (reaction.ProfileID === userProfileStore.getProfile().profileId) {
