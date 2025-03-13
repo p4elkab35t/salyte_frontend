@@ -172,7 +172,7 @@
                 <p class="text-gray-700">{postData.content}</p>
             {:else}
                 <textarea class="w-full h-24 border border-gray-200 rounded-md p-2 text-zinc-800" bind:value={postData.content}></textarea>
-                <button class="bg-amber-600 text-white rounded-md px-4 py-2 mt-2 cursor-pointer" onclick={() => submitEdit()}>Save</button>
+                <button class="bg-amber-600 text-white rounded-md px-4 py-2 mt-2 cursor-pointer" onclick={()=>{submitEdit()}}>Save</button>
             {/if}
         {:else}
             <h1>Loading...</h1>
