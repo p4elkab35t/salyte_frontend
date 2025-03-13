@@ -60,6 +60,7 @@
                                 }
                                 chats = [...chats, newChat];
                             }).catch((error) => {
+                                newChat['LastMessage'] = 'Currently no messages yet';
                                 console.error(error);
                             });
                         }
