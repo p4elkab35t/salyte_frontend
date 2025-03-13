@@ -30,7 +30,7 @@
 
 </style>
 
-<div class="flex flex-col items-center gap-4">
+<div class="flex flex-col gap-4">
     <h2 class="text-zinc-100 px-4 lg:px-0 text-2xl lg:text-5xl font-bold -translate-y-4 md:-translate-y-2 lg:-translate-y-4">    
         Following
     </h2>
