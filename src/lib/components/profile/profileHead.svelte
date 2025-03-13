@@ -16,6 +16,7 @@
         Username: string;
         Bio: string | null;
         ProfilePictureURL: string | null;
+        Visibility: string;
     }
 
     let profileData = $state({
@@ -58,7 +59,8 @@
             ProfileID: user.profileId,
             Username: user.displayName,
             Bio: user.bio,
-            ProfilePictureURL: user.avatar
+            ProfilePictureURL: user.avatar,
+            Visibility: 'public',
         }
 
         console.log(updateUserDataObject);

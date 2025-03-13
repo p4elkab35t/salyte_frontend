@@ -45,6 +45,10 @@ async function authFetch(
       });
 
       const data = await response.json();
+      // if data contains error field
+      if(data.error) {
+        throw(new Error(data.error));
+      }
       return data;
     } catch (error) {
       console.error(`API error (${endpoint}):`, error);
