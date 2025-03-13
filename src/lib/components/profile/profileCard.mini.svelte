@@ -82,6 +82,7 @@
 	onMount(() => {
 		userProfileStore.subscribe((userProfile) => {
 			isMe = userProfile.profileId === profileID;
+            isFollowing = userProfile.followingIDs?.includes(profileID) ?? false;
 		});
 	});
 </script>
