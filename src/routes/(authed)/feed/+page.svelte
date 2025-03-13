@@ -59,8 +59,7 @@
         }
     }
 
-    onMount(() => {
-        const observer = new IntersectionObserver(
+    const observer = new IntersectionObserver(
             (entries) => {
                 console.log('entries', entries);
                 entries.forEach((entry) => {
@@ -81,6 +80,9 @@
             }
         );
 
+
+    onMount(() => {
+        
         console.log('sentinel', sentinel);
 
         if (sentinel) {
@@ -95,6 +97,13 @@
             }
         };
     });
+
+    $effect(()=>{
+        if(sentinel){
+            console.log('observing');
+            observer.observe(sentinel);
+        }
+    })
 </script>
 
 <main>
