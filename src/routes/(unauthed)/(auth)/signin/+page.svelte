@@ -3,6 +3,8 @@
 	import InputForm from '$lib/components/login/inputForm.svelte';
 	import Button from '$lib/components/general/button.svelte';
 	import { AuthAPI } from '$lib/api/auth';
+	import { goto } from '$app/navigation';
+	import { authStore } from '$lib/stores/auth';
 
 	let email = $state('');
 	let password = $state('');
@@ -13,6 +15,10 @@
 		AuthAPI.login({email, password}).then((response) => {
 			console.log(response);
 			isSubmitting = false;
+			return response;
+		}).then((response) => {
+			if(response.token && response.user_id)authStore.setAuth(response.token, response.user_id);
+			goto('/feed')
 		});
 		console.log(email, password);
 	};
