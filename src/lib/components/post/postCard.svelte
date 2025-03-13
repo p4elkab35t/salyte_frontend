@@ -51,7 +51,14 @@
     }
 
     const getComments = async (postID: string) => {
-        return SocialAPI.getComments(postID);
+        return SocialAPI.getComments(postID).then((res) => {
+            if(!res || res === null || res === undefined || !Array.isArray(res)) {
+                return [];
+            }
+            return res;
+        }).catch((error) => {
+            console.error(error);
+        });
     }
 
     const getReactions = async (postID: string) => {
@@ -96,30 +103,6 @@
         });
     }
 
-    // export interface PostCardProps {
-    //     author: profileProps;
-    //     timestamp: string;
-    //     title: string;
-    //     content: string;
-    //     reaction: {
-    //         isLiked: boolean;
-    //         count: number;
-    //     };
-    //     commentsNumber: number;
-    //     lastComment?: {
-    //         author: profileProps;
-    //         content: string;
-    //         timestamp: string;
-    //     };
-    //     postId: string;
-    //     children?: any; 
-    //     isPage?: boolean;
-    // }
-
-    // const saveContent = ()=>{
-    //     console.log(newContent);
-    // }
-
     let postData: changeablePostData | undefined = $state();
 
     onMount(()=>{
@@ -128,25 +111,6 @@
             lastComment: undefined
         });
     })
-    // $inspect(postData).with(console.trace);
-    
-
-    // function likePost() {
-    //     if(!postData) return;
-    //     postData.reaction.isLiked = !postData.reaction.isLiked;
-    //     postData.reaction.isLiked ? postData.reaction.count++ : postData.reaction.count--;
-    // }
-
-    // $effect(()=>{
-    //     isAuthor = author.profileID === userProfileStore.getProfile().profileId;
-
-    //     postData = ({
-    //         content: content,
-    //         reaction: reaction,
-    //         lastComment: lastComment,
-    //         commentsNumber: commentsNumber
-    //     });
-    // })
 
 
 </script>
