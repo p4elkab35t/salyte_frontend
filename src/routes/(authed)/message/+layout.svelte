@@ -18,7 +18,7 @@
 
     
     let chats = $state<chatType[]>([]);
-    let children = $props();
+    let { children } = $props();
 
 //     type Message struct {
 // 	ID        uuid.UUID `db:"id"`
@@ -107,6 +107,6 @@
         {/await}
     </div>
     <div>
-        {@render children?.()}
+        {@render children()}
     </div>
 </div>
