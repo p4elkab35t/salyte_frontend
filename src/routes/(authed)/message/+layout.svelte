@@ -106,7 +106,7 @@
 
 </style>
 
-<div class="flex flex-row md:h-[95svh] h-[98svh]">
+<div class="flex flex-row h-[92svh] md:h-[85svh]">
     <div class="w-full md:w-2/5 h-full bg-zinc-100">
         {#if userProfileStore.getProfile().profileId}
             {#if isLoading}
@@ -125,6 +125,6 @@
         {/if}
     </div>
     <div class="w-full md:w-3/5 h-full overflow-y-auto bg-zinc-600">
-        {@render children()}
+        <!-- {@render children()} -->
     </div>
 </div>
